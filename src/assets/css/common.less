@@ -1,0 +1,316 @@
+body {
+  overflow: hidden;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+ul li {
+  list-style: none;
+}
+
+/**滚动条样式**/
+::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+  background-color: #f5f5f5;
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+::-webkit-scrollbar-track {
+  border-radius: 2px;
+  background-color: #f5f5f5;
+}
+
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background-color: #ccc;
+}
+
+// 设置表格样式
+.table-total-num {
+  display: inline-block;
+  background-color: #e6f7ff;
+  border: 1px #91d5ff solid;
+  padding: 0px 10px;
+  line-height: 20px;
+  font-size: 12px;
+  height: 22px;
+  border-radius: 4px;
+  color: #1890ff;
+}
+.ant-table-placeholder,
+.ant-table-thead > tr > th,
+.ant-table-tbody > tr > td {
+  border-bottom: 1px #f5f5f5 solid !important;
+}
+
+/**modal弹出框**/
+.ant-modal-content {
+  margin-top: -55px !important;
+}
+.ant-modal-header,
+.ant-modal-footer {
+  border-color: #f5f5f5 !important;
+}
+
+/**界面空白区域**/
+.pos-box {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 9;
+}
+.bg-fff {
+  background-color: #fff;
+}
+
+.ant-layout {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  position: absolute;
+  overflow: hidden;
+}
+
+.page-layout {
+  flex: 1;
+  overflow: hidden;
+  background: #fff;
+}
+
+.layout.ant-layout .header,
+.sider {
+  box-shadow: none !important;
+}
+
+/**顶部按钮区域**/
+.top-btn-group {
+  padding: 10px 5px 20px 5px;
+}
+
+/**基本间距**/
+.mar-t10 {
+  margin-top: @mar10;
+}
+
+.mar-l10 {
+  margin-left: @mar10;
+}
+
+.mar-r10 {
+  margin-right: @mar10;
+}
+
+.mar-b10 {
+  margin-bottom: @mar10;
+}
+
+.padd-t10 {
+  padding-top: @mar10;
+}
+
+.padd-l10 {
+  padding-left: @mar10;
+}
+
+.padd-r10 {
+  padding-right: @mar10;
+}
+
+.padd-b10 {
+  padding-bottom: @mar10;
+}
+
+/** 伸缩盒子盒子 **/
+.qui-fx {
+  display: flex;
+}
+
+.qui-fx-ver {
+  display: flex;
+  flex-direction: column;
+}
+
+/**水平垂直居中**/
+.qui-fx-ac-jc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/**垂直居中**/
+.qui-fx-ac {
+  display: flex;
+  align-items: center;
+}
+
+/**垂直居下**/
+.qui-fx-ae {
+  display: flex;
+  align-items: flex-end;
+}
+
+/**水平居中**/
+.qui-fx-jc {
+  display: flex;
+  justify-content: center;
+}
+
+/**水平居右**/
+.qui-fx-je {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/**水平两端对齐**/
+.qui-fx-jsb {
+  display: flex;
+  justify-content: space-between;
+}
+
+/**水平等间距对齐**/
+.qui-fx-jsa {
+  display: flex;
+  justify-content: space-around;
+}
+
+/**水平换行**/
+.qui-fx-wp {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.qui-fx-f1 {
+  min-width: 0px;
+  flex: 1;
+  position: relative;
+}
+
+.qui-fx-f2 {
+  min-width: 0px;
+  flex: 2;
+  position: relative;
+}
+
+/**
+ * 元素只显示一行，两行，三行多余的隐藏
+ */
+.qui-te {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.qui-te2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.qui-te3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+/**公共按钮**/
+.add-btn {
+  margin-right: 10px;
+  background: #6882da !important;
+  color: #fff !important;
+}
+
+.del-btn {
+  margin-right: 10px;
+  background: #da8667 !important;
+  color: #fff !important;
+}
+
+.export-btn {
+  margin-right: 10px;
+  background: #67bcda !important;
+  color: #fff !important;
+}
+
+.export-all-btn {
+  margin-right: 10px;
+  background: #67dabf !important;
+  color: #fff !important;
+}
+
+/**公共操作按钮**/
+.detail-action-btn {
+  margin-right: 5px;
+  background: #909399 !important;
+  color: #fff !important;
+}
+
+.power-action-btn {
+  margin-right: 5px;
+  background: #f56c6c !important;
+  color: #fff !important;
+}
+
+.user-action-btn {
+  margin-right: 5px;
+  background: #e6a23c !important;
+  color: #fff !important;
+}
+
+.add-action-btn {
+  margin-right: 5px;
+  background: #6882da !important;
+  color: #fff !important;
+}
+
+.edit-action-btn {
+  margin-right: 5px;
+  background: #67bcda !important;
+  color: #fff !important;
+}
+
+.del-action-btn {
+  margin-right: 5px;
+  background: #ff4949 !important;
+  color: #fff !important;
+}
+
+.ant-btn:hover {
+  opacity: 0.6;
+  border: 1px transparent solid !important;
+}
+
+.ant-btn:focus {
+  border: 1px transparent solid !important;
+}
+
+/**详情提示信息块**/
+.tip-banner {
+  border-radius: @radius;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 5px 5px 0 0;
+  color: #666;
+  height: 36px;
+  line-height: 36px;
+  padding: 0 10px;
+  background-color: #e6f7ff;
+}
+
+/**树组件选择颜色**/
+.ant-tree li .ant-tree-node-content-wrapper.ant-tree-node-selected {
+  background-color: @main-color !important;
+  color: #fff !important;
+}
