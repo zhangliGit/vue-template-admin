@@ -19,14 +19,6 @@ const vm = new Vue()
 axios.defaults.timeout = 15000
 axios.defaults.withCredentials = true // 让ajax携带cookie
 
-// 设置公用请求头
-const { token = '', userCode = '', schoolCode = '' } = JSON.parse(
-  window.sessionStorage.getItem('loginInfo') || JSON.stringify({})
-)
-axios.defaults.headers.common['token'] = token
-axios.defaults.headers.common['userCode'] = userCode
-axios.defaults.headers.common['schoolCode'] = schoolCode
-
 // 拦截请求
 axios.interceptors.request.use(
   function(config) {
@@ -62,13 +54,13 @@ function responseRes(res) {
       Modal.warning({
         title: '提示',
         okText: '确定',
-        content: '认证过期，请重新登录',
+        content: '认证过期，请重新登录'
       })
     } else {
       Modal.warning({
         title: '提示',
         okText: '确定',
-        content: res.message || '数据请求失败, 请联系管理员',
+        content: res.message || '数据请求失败, 请联系管理员'
       })
       reject(res.message)
     }

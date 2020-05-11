@@ -31,10 +31,9 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import { mapState } from 'vuex'
 import SubmitForm from '@c/SubmitForm'
 import userPic from '../../assets/img/user-icon.png'
-import hostEnv from '@config/host-env'
 const formData = [
   {
     value: 'oldPassword',
@@ -90,7 +89,9 @@ export default {
       const tag = !this.slideTag
       this.$emit('toggle', tag)
     },
-    loginOut() {}
+    loginOut() {
+      window.location.href = '/'
+    }
   }
 }
 </script>

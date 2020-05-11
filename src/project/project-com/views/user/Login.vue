@@ -2,7 +2,7 @@
   <div class="protal-login">
     <div class="protal-logo"></div>
     <div class="protal-dialog">
-      <div class="title">观山湖区校园体育场地门禁系统</div>
+      <div class="title">组件示例</div>
       <div class="protal-box">
         <a-tabs v-model="autoKey">
           <a-tab-pane tab="登录" key="1">

@@ -16,8 +16,8 @@
                   v-decorator="[
                     item.value,
                     {
-                      rules: [{ required: false, message: item.placeholder || '请输入' }],
-                    },
+                      rules: [{ required: false, message: item.placeholder || '请输入' }]
+                    }
                   ]"
                 >
                   <a-select
@@ -25,11 +25,9 @@
                     v-decorator="['prefix', { initialValue: item.selectType[0].val }]"
                     style="min-width: 70px"
                   >
-                    <a-select-option
-                      :value="list.val"
-                      v-for="(list, index1) in item.selectType"
-                      :key="index1"
-                    >{{ list.val }}</a-select-option>
+                    <a-select-option :value="list.val" v-for="(list, index1) in item.selectType" :key="index1">{{
+                      list.val
+                    }}</a-select-option>
                   </a-select>
                 </a-input>
               </a-form-item>
@@ -39,42 +37,32 @@
                 <a-input
                   :placeholder="item.placeholder"
                   style="width: 120px"
-                  v-decorator="[
-                    item.value,
-                    {rules: [
-                      { required: false, message: item.placeholder || '请输入' }
-                    ]}
-                  ]"
+                  v-decorator="[item.value, { rules: [{ required: false, message: item.placeholder || '请输入' }] }]"
                 />
               </a-form-item>
               <!--选择框-->
               <a-form-item :label="item.label" v-if="item.type === 'select'">
                 <a-select
-                  v-decorator="[
-                    item.value,
-                    { rules: [{ required: false, message: item.placeholder }]}
-                  ]"
+                  v-decorator="[item.value, { rules: [{ required: false, message: item.placeholder }] }]"
                   style="width: 120px"
                   :placeholder="item.placeholder || '全部'"
                 >
-                  <a-select-option
-                    v-for="(item2, index2) in item.list"
-                    :value="item2.key"
-                    :key="index2"
-                  >{{ item2.val }}</a-select-option>
+                  <a-select-option v-for="(item2, index2) in item.list" :value="item2.key" :key="index2">{{
+                    item2.val
+                  }}</a-select-option>
                 </a-select>
               </a-form-item>
               <!--单选日期-->
               <a-form-item :label="item.label" v-if="item.type === 'singleTime'">
                 <a-date-picker
-                  v-decorator="[item.value, {rules: [{ required: false, message: item.placeholder }]}]"
+                  v-decorator="[item.value, { rules: [{ required: false, message: item.placeholder }] }]"
                 />
               </a-form-item>
               <!--复选日期-->
               <a-form-item :label="item.label" v-if="item.type === 'rangeTime'">
                 <a-range-picker
                   style="width: 280px"
-                  v-decorator="[item.value, {rules: [{ required: false, message: item.placeholder }]}]"
+                  v-decorator="[item.value, { rules: [{ required: false, message: item.placeholder }] }]"
                 />
               </a-form-item>
             </div>
@@ -88,7 +76,8 @@
           style="margin-left: 5px; background:#e8e8e8;color:#999"
           type="default"
           @click="resetBtn"
-        >重置</a-button>
+          >重置</a-button
+        >
         <slot name="right"></slot>
       </a-col>
     </a-row>

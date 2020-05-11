@@ -94,11 +94,11 @@ module.exports = {
     port: 8001,
     open: true,
     proxy: {
-      '/wxz_guiyang': {
-        target: 'http://192.168.1.123:19001/',
+      '/uiApi': {
+        target: 'http://canpointtest.com:8090/api/',
         changeOrigin: true,
         pathRewrite: {
-          '^/wxz_guiyang': ''
+          '^/uiApi': ''
         }
       }
     }

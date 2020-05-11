@@ -50,13 +50,7 @@ export default {
     ...mapState('home', ['loginInfo'])
   },
   created() {
-    const showMenu = JSON.parse(JSON.stringify(this.allMenu)).find(item => item.path === '/home').children
-    if (this.loginInfo.orgType == '2') {
-      showMenu.splice(
-        showMenu.findIndex(item => item.path === '/schoolManage'),
-        1
-      )
-    }
+    const showMenu = JSON.parse(JSON.stringify(this.allMenu)).find(item => item.path === '/').children
     this.menus = showMenu
     this.collapsed = !this.sidebarOpened
   },

@@ -45,9 +45,10 @@ const home = {
   namespaced: true,
   state: {
     slideTag: true,
-    loginInfo: getState('loginInfo', {}),
-    orgList: getState('orgList', []),
-    currentOrg: getState('currentOrg', {})
+    loginInfo: getState('loginInfo', {
+      systemName: '前端项目管理',
+      userName: '管理员'
+    })
   },
   actions: {
     ...actions

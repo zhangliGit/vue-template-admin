@@ -4,16 +4,16 @@
  */
 
 const ConfigEnv = process.env.VUE_APP_URL
-let wxz_guiyang = ''
+let uiApi = ''
 
 if (ConfigEnv === 'test') {
-  wxz_guiyang = '/wxz_guiyang'
+  uiApi = '/uiApi'
 } else if (ConfigEnv === 'prod') {
-  wxz_guiyang = '/wxz_guiyang'
+  uiApi = '/uiApi'
 } else {
-  wxz_guiyang = '/wxz_guiyang'
+  uiApi = '/uiApi'
 }
 
 export default {
-  wxz_guiyang
+  uiApi
 }
