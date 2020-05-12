@@ -1,7 +1,7 @@
 <template>
   <a-modal
     width="1200px"
-    :title="title"
+    title="绑定设备"
     v-model="status"
     @ok="submitOk"
     :maskClosable="false"
@@ -10,13 +10,13 @@
   >
     <a-row type="flex" justify="start" style="margin-bottom: 15px;">
       <a-col>
-        <span>控制组名称：</span>
+        <span>设备名称：</span>
         <a-input v-model="keyword" style="width: 120px;margin-right: 20px" placeholder="请输入控制组名称" />
       </a-col>
       <a-col>
         <span>控制组类型：</span>
         <a-select v-model="contorlType" style="width: 120px;margin-right: 20px">
-          <a-select-option v-for="(item,i) in typeList" :key="i" :value="item.key">{{ item.val }}</a-select-option>
+          <a-select-option v-for="(item, i) in typeList" :key="i" :value="item.key">{{ item.val }}</a-select-option>
         </a-select>
       </a-col>
       <a-col>
@@ -24,7 +24,7 @@
         <a-button type="default" @click="resetBtn">重置</a-button>
       </a-col>
     </a-row>
-    <div class="choose-user qui-fx" >
+    <div class="choose-user qui-fx">
       <div class="qui-fx-ver qui-fx-f1">
         <table-list
           is-check
@@ -35,7 +35,8 @@
           :columns="columns"
           @clickRow="clickRow"
           @selectAll="selectAll"
-          :table-list="userList">
+          :table-list="userList"
+        >
         </table-list>
         <page-num
           :jumper="false"
@@ -44,7 +45,8 @@
           :mar-bot="0"
           size="small"
           :total="total"
-          @change-page="getStudentList"></page-num>
+          @change-page="getStudentList"
+        ></page-num>
       </div>
       <div class="user-box qui-fx-ver">
         <div class="title qui-fx-jsb">
@@ -72,37 +74,40 @@ import hostEnv from '@config/host-env'
 const columns = [
   {
     title: '序号',
-    width: '20%',
+    width: '10%',
     scopedSlots: {
       customRender: 'index'
     }
   },
   {
-    title: '控制组名称',
-    dataIndex: 'controlGroupName',
-    width: '20%'
+    title: '设置名称',
+    dataIndex: 'deviceName',
+    width: '15%'
   },
   {
-    title: '控制组编码',
-    dataIndex: 'controlGroupCode',
-    width: '20%'
-  },
-  {
-    title: '控制组类型',
-    dataIndex: 'controlGroupType',
-    width: '20%',
-    customRender: (text) => {
-      return text === 1 ? '进控制组' : text === 2 ? '出控制组' : '数据采集控制组'
+    title: '设备类型',
+    dataIndex: 'deviceType',
+    width: '15%',
+    customRender: text => {
+      return parseInt(text) === 1 ? '相机' : '面板机'
     }
   },
   {
-    title: '备注',
-    dataIndex: 'photoUrl',
-    width: '20%'
+    title: '设备IP',
+    dataIndex: 'deviceIp',
+    width: '30%'
+  },
+  {
+    title: '设备状态',
+    dataIndex: 'deviceStatus',
+    width: '30%',
+    customRender: text => {
+      return parseInt(text) === 1 ? '在线' : '离线'
+    }
   }
 ]
 export default {
-  name: 'ChooseStudent',
+  name: 'ChooseControl',
   components: {
     PageNum,
     TableList
@@ -135,18 +140,18 @@ export default {
   },
   computed: {
     status: {
-      get () {
+      get() {
         return this.value
       },
-      set () {
+      set() {
         this.$emit('input', false)
       }
     }
   },
-  mounted () {
+  mounted() {
     this.getStudentList()
   },
-  data () {
+  data() {
     return {
       confirmLoading: false,
       chooseList: [],
@@ -181,7 +186,7 @@ export default {
     }
   },
   methods: {
-    async getStudentList () {
+    async getStudentList() {
       const res = await $ajax.post({
         url: `${hostEnv.wxz_control}/control/group/info/queryControlGroupInfos`,
         params: {
@@ -194,7 +199,7 @@ export default {
       this.userList = res.data.list
       this.total = res.data.total
     },
-    reset () {
+    reset() {
       this.confirmLoading = false
       this.$emit('input', false)
     },
@@ -203,14 +208,14 @@ export default {
       this.contorlType = ''
       this.getStudentList()
     },
-    error () {
+    error() {
       this.confirmLoading = false
     },
-    delUser (id, index) {
+    delUser(id, index) {
       this.totalList.splice(index, 1)
       this.chooseList.splice(this.chooseList.indexOf(id), 1)
     },
-    selectAll (item, type) {
+    selectAll(item, type) {
       console.log(item)
       if (type) {
         this.totalList = this.totalList.concat(item)
@@ -224,7 +229,7 @@ export default {
       }
     },
     // 监听选中或取消
-    clickRow (item, type) {
+    clickRow(item, type) {
       if (type) {
         this.totalList.push(item)
       } else {
@@ -232,7 +237,7 @@ export default {
         this.totalList.splice(index, 1)
       }
     },
-    submitOk () {
+    submitOk() {
       if (this.totalList.length === 0) {
         this.$message.warning('请选择控制组')
         return
@@ -249,7 +254,7 @@ export default {
 .choose-user {
   height: 600px;
   .org-box {
-    width: 200px
+    width: 200px;
   }
   .user-box {
     border: 1px #f5f5f5 solid;
@@ -257,10 +262,10 @@ export default {
     width: 200px;
     .title {
       padding: 0 10px;
-      background-color:#f5f5f5;
+      background-color: #f5f5f5;
       height: 41px;
       line-height: 41px;
-      border-bottom: 1px #f5f5f5 solid
+      border-bottom: 1px #f5f5f5 solid;
     }
     li {
       border-bottom: 1px #f5f5f5 solid;

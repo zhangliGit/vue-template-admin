@@ -2,7 +2,7 @@ const path = require('path')
 const utils = require('./build/utils')
 const theme = require('./src/theme')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const webpack = require('webpack')
 const uploadZip = require('./build/upload-zip')
 function resolve(dir) {
@@ -67,18 +67,18 @@ module.exports = {
         moment: 'moment'
       }
       // 压缩代码
-      // config.optimization = {
-      //   splitChunks: {},
-      //   minimizer: [
-      //     new UglifyJsPlugin({
-      //       uglifyOptions: {
-      //         compress: {
-      //           drop_console: true
-      //         }
-      //       }
-      //     })
-      //   ]
-      // }
+      config.optimization = {
+        splitChunks: {},
+        minimizer: [
+          new UglifyJsPlugin({
+            uglifyOptions: {
+              compress: {
+                drop_console: true
+              }
+            }
+          })
+        ]
+      }
     }
   },
   css: {
@@ -99,6 +99,13 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           '^/uiApi': ''
+        }
+      },
+      '/lz_user_center': {
+        target: 'http://canpointtest.com/lz_user_center',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/lz_user_center': ''
         }
       }
     }

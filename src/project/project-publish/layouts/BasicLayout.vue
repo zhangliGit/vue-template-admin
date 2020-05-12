@@ -83,7 +83,7 @@ export default {
   overflow: hidden;
 }
 .slide-left-close {
-  width: 560px;
+  width: 48px;
 }
 .page-transition-enter {
   opacity: 0;

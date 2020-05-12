@@ -11,20 +11,22 @@
       @close="userTag = false"
     >
       <div style="height: 700px" class="qui-fx">
-        <table-list
-        :scroll-h = '600'
-        :columns="accountColumns"
-        :table-list="accountList">
+        <table-list :scroll-h="600" :columns="accountColumns" :table-list="accountList">
           <template v-slot:actions="action">
             <a-tooltip placement="topLeft" title="编辑">
-              <a-button @click="addAccountList(true, '编辑账号', action.record)" size="small" class="edit-action-btn" icon="form"></a-button>
+              <a-button
+                @click="addAccountList(true, '编辑账号', action.record)"
+                size="small"
+                class="edit-action-btn"
+                icon="form"
+              ></a-button>
             </a-tooltip>
             <a-popconfirm placement="left" okText="确定" cancelText="取消" @confirm="delAccountList(action)">
               <template slot="title">
                 您确定删除吗?
               </template>
               <a-tooltip placement="topLeft" title="删除">
-                <a-button  size="small" class="del-action-btn" icon="delete"></a-button>
+                <a-button size="small" class="del-action-btn" icon="delete"></a-button>
               </a-tooltip>
             </a-popconfirm>
           </template>
@@ -39,7 +41,7 @@
           borderTop: '1px #f5f5f5 solid',
           padding: '10px 60px',
           textAlign: 'center',
-          zIndex: 1,
+          zIndex: 1
         }"
       >
         <a-button style="width: 200px; height: 40px; line-height: 40px; background: #ccc" @click="userTag = false">
@@ -54,7 +56,7 @@
           top: '2px',
           padding: '10px 40px',
           textAlign: 'center',
-          zIndex: 1,
+          zIndex: 1
         }"
       >
         <a-button type="primary" @click="addAccountList(false, '新增账号')">
@@ -62,29 +64,38 @@
         </a-button>
       </div>
     </a-drawer>
-    <submit-form ref="user" @submit-form="submitFormUser" :title="titleUser" v-model="formUser" :form-data="formDataUser"></submit-form>
+    <submit-form
+      ref="user"
+      @submit-form="submitFormUser"
+      :title="titleUser"
+      v-model="formUser"
+      :form-data="formDataUser"
+    ></submit-form>
     <submit-form ref="form" @submit-form="submitForm" :title="title" v-model="formStatus" :form-data="formData">
     </submit-form>
     <search-form is-reset @search-form="searchForm" :search-label="searchLabel">
       <div slot="left">
         <a-button type="primary" icon="plus" @click="addOrgList(false, '新增机构')">新增机构</a-button>
       </div>
-      <div slot="right">
-      </div>
+      <div slot="right"></div>
     </search-form>
-    <table-list
-      :page-list="pageList"
-      :columns="orgColumns"
-      :table-list="orgList">
+    <table-list :page-list="pageList" :columns="orgColumns" :table-list="orgList">
       <template v-slot:other1="other1">
-        <a-tag :color="other1.record.orgType === '1' ? '#f50' : '#87d068'">{{ other1.record.orgType === '1' ? '教育局' : '学校' }}</a-tag>
+        <a-tag :color="other1.record.orgType === '1' ? '#f50' : '#87d068'">{{
+          other1.record.orgType === '1' ? '教育局' : '学校'
+        }}</a-tag>
       </template>
       <template v-slot:actions="action">
         <a-tooltip placement="topLeft" title="账号列表">
           <a-button @click="showDraw(action.record)" size="small" class="user-action-btn" icon="team"></a-button>
         </a-tooltip>
         <a-tooltip placement="topLeft" title="编辑">
-          <a-button @click="addOrgList(true, '编辑机构', action.record)" size="small" class="edit-action-btn" icon="form"></a-button>
+          <a-button
+            @click="addOrgList(true, '编辑机构', action.record)"
+            size="small"
+            class="edit-action-btn"
+            icon="form"
+          ></a-button>
         </a-tooltip>
         <a-popconfirm placement="left" okText="确定" cancelText="取消" @confirm="delOrgList(action)">
           <template slot="title">
@@ -114,7 +125,7 @@ const searchLabel = [
     placeholder: '请输入名称'
   }
 ]
-const formDataUser  = [
+const formDataUser = [
   {
     value: 'accountName',
     initValue: '',
@@ -128,7 +139,7 @@ const formDataUser  = [
     type: 'input',
     label: '账号密码',
     placeholder: '请输入账号密码'
-  },
+  }
 ]
 const formData = [
   {
@@ -153,39 +164,39 @@ const formData = [
     placeholder: '请输入机构地址'
   },
   {
-		value: 'orgType',
-		initValue: '',
-		list: [
-		{
-				key: '1',
-				val: '管理局'
-		},
-		{
-				key: '2',
-				val: '学校'
-		}
-		],
-		type: 'radio',
-		label: '机构类型',
-		placeholder: '请选择机构类型'
-	},
-	{
-		value: 'orgMark',
-		initValue: '',
-		list: [
-		{
-				key: '1',
-				val: '启用'
-		},
-		{
-				key: '2',
-				val: '停用'
-		}
-		],
-		type: 'radio',
-		label: '是否启用',
-		placeholder: '请选择是否启用'
-	},
+    value: 'orgType',
+    initValue: '',
+    list: [
+      {
+        key: '1',
+        val: '管理局'
+      },
+      {
+        key: '2',
+        val: '学校'
+      }
+    ],
+    type: 'radio',
+    label: '机构类型',
+    placeholder: '请选择机构类型'
+  },
+  {
+    value: 'orgMark',
+    initValue: '',
+    list: [
+      {
+        key: '1',
+        val: '启用'
+      },
+      {
+        key: '2',
+        val: '停用'
+      }
+    ],
+    type: 'radio',
+    label: '是否启用',
+    placeholder: '请选择是否启用'
+  },
   {
     value: 'orgRemark',
     initValue: '',
@@ -197,47 +208,47 @@ const formData = [
 ]
 const accountColumns = [
   {
-		title: '序号',
-		width: '15%',
-		scopedSlots: {
-			customRender: 'index'
-		}
+    title: '序号',
+    width: '15%',
+    scopedSlots: {
+      customRender: 'index'
+    }
   },
   {
-		title: '账号名称',
-		width: '30%',
-		dataIndex: 'accountName',
+    title: '账号名称',
+    width: '30%',
+    dataIndex: 'accountName'
   },
   {
-		title: '账号密码',
+    title: '账号密码',
     width: '25%',
-    dataIndex: 'accountPwd',
+    dataIndex: 'accountPwd'
   },
   {
-		title: '操作',
-		width: '30%',
-		scopedSlots: {
-			customRender: 'action'
-		}
-	}
+    title: '操作',
+    width: '30%',
+    scopedSlots: {
+      customRender: 'action'
+    }
+  }
 ]
 const orgColumns = [
-	{
-		title: '序号',
-		width: '8%',
-		scopedSlots: {
-			customRender: 'index'
-		}
-	},
-	{
-		title: '机构名称',
-		dataIndex: 'orgName',
-		width: '15%'
-	},
-	{
-		title: '机构编码',
-		dataIndex: 'orgCode',
-		width: '12%'
+  {
+    title: '序号',
+    width: '8%',
+    scopedSlots: {
+      customRender: 'index'
+    }
+  },
+  {
+    title: '机构名称',
+    dataIndex: 'orgName',
+    width: '15%'
+  },
+  {
+    title: '机构编码',
+    dataIndex: 'orgCode',
+    width: '12%'
   },
   {
     title: '机构类型',
@@ -247,22 +258,22 @@ const orgColumns = [
     }
   },
   {
-		title: '机构地址',
-		dataIndex: 'orgAddress',
-		width: '25%'
+    title: '机构地址',
+    dataIndex: 'orgAddress',
+    width: '25%'
   },
   {
-		title: '备注',
-		dataIndex: 'orgRemark',
-		width: '15%'
-	},
-	{
-		title: '操作',
-		width: '15%',
-		scopedSlots: {
-			customRender: 'action'
-		}
-	}
+    title: '备注',
+    dataIndex: 'orgRemark',
+    width: '15%'
+  },
+  {
+    title: '操作',
+    width: '15%',
+    scopedSlots: {
+      customRender: 'action'
+    }
+  }
 ]
 export default {
   name: 'SchoolManage',
@@ -273,10 +284,9 @@ export default {
     SubmitForm
   },
   computed: {
-    ...mapState('home', [
-    ])
+    ...mapState('home', [])
   },
-  data () {
+  data() {
     return {
       orgTitle: '',
       userTag: false,
@@ -291,7 +301,7 @@ export default {
       orgColumns,
       accountColumns,
       searchText: {
-        orgName: '',
+        orgName: ''
       },
       pageList: {
         page: 1,
@@ -301,7 +311,7 @@ export default {
       accountList: []
     }
   },
-  mounted () {
+  mounted() {
     this.showList()
   },
   methods: {
@@ -316,22 +326,22 @@ export default {
       'updateAccount'
     ]),
     // 弹出侧边栏
-    showDraw (item) {
+    showDraw(item) {
       this.userTag = true
       this.orgItem = item
       this.orgTitle = item.orgName + '账号列表'
       this.showAccount(item)
     },
     // 展示账号列表
-    async showAccount (item) {
-      const res  = await this.getAccountList({
+    async showAccount(item) {
+      const res = await this.getAccountList({
         page: 1,
         size: 40,
         orgCode: item.orgCode
       })
       this.accountList = res.data.list || []
     },
-    addAccountList (type, title, record) {
+    addAccountList(type, title, record) {
       this.titleUser = title
       this.userEdit = type
       if (type) {
@@ -345,16 +355,16 @@ export default {
       this.formUser = true
     },
     // 新增修改账号
-    async submitFormUser (values) {
+    async submitFormUser(values) {
       try {
-				if (this.userEdit) {
-					values.id = this.userId
-				}
-				await this[this.actionFun]({
+        if (this.userEdit) {
+          values.id = this.userId
+        }
+        await this[this.actionFun]({
           ...values,
           accountRemark: '',
           orgCode: this.orgItem.orgCode
-				})
+        })
         this.$refs.user.reset()
         this.$message.success('操作成功')
         this.$tools.goNext(() => {
@@ -365,7 +375,7 @@ export default {
       }
     },
     // 删除账号
-    async delAccountList (action) {
+    async delAccountList(action) {
       await this.delAccount({
         id: action.record.id
       })
@@ -374,7 +384,7 @@ export default {
         this.showAccount(this.orgItem)
       })
     },
-    async showList () {
+    async showList() {
       const res = await this.getOrgList({
         ...this.pageList,
         ...this.searchText
@@ -382,28 +392,28 @@ export default {
       this.orgList = res.data.list
       this.total = res.data.total
     },
-    addOrgList (type, title, record) {
+    addOrgList(type, title, record) {
       this.title = title
       this.isEdit = type
       if (type) {
-				this.id = record.id
-				this.actionFun = 'updateOrg'
-				this.formData = this.$tools.fillForm(formData, record)
-				console.log(this.formData)
+        this.id = record.id
+        this.actionFun = 'updateOrg'
+        this.formData = this.$tools.fillForm(formData, record)
+        console.log(this.formData)
       } else {
-				this.actionFun = 'addOrg'
+        this.actionFun = 'addOrg'
         this.formData = formData
       }
       this.formStatus = true
     },
-    async submitForm (values) {
+    async submitForm(values) {
       try {
-				if (this.isEdit) {
-					values.id = this.id
-				}
-				await this[this.actionFun]({
-					...values
-				})
+        if (this.isEdit) {
+          values.id = this.id
+        }
+        await this[this.actionFun]({
+          ...values
+        })
         this.$refs.form.reset()
         this.$message.success('操作成功')
         this.$tools.goNext(() => {
@@ -413,7 +423,7 @@ export default {
         this.$refs.form.error()
       }
     },
-    async delOrgList (action) {
+    async delOrgList(action) {
       await this.delOrg({
         id: action.record.id
       })
@@ -422,8 +432,8 @@ export default {
         this.showList()
       })
     },
-    searchForm (values) {
-			this.pageList.page = 1
+    searchForm(values) {
+      this.pageList.page = 1
       this.searchText = values
       this.showList()
     }
@@ -431,5 +441,4 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-</style>
+<style lang="less" scoped></style>

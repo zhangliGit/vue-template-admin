@@ -1,11 +1,11 @@
 <template>
-  <div class="home page-layout" style="overflow-y:scroll"></div>
+  <div class="home page-layout"></div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 export default {
-  name: 'Home',
+  name: 'ProtalMobile',
   components: {},
   data() {
     return {}

@@ -273,6 +273,8 @@ export default {
   },
   data() {
     return {
+      studentTag: false,
+      userTag: false,
       title: '',
       total: 0,
       drawTag: false,
@@ -287,7 +289,7 @@ export default {
         size: 20
       },
       fileInfo: {
-        url: `http://canpointtest.com:8090/file/upload-file?uploadPath=/opt/canpoint-project-serve/public/upload`, // 接口地址
+        url: `http://canpointtest.com:8090/file/upload-file?uploadPath=/opt/canpoint-project-serve/public/upload/`, // 接口地址
         tip: '上传头像',
         h: 120, // 高度
         w: 120 // 宽度

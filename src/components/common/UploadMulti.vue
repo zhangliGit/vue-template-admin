@@ -5,14 +5,23 @@
       v-for="(pic, index) in fileList"
       :key="pic.id"
       class="qui-fx qui-fx-ac-jc"
-      :style="{position: 'relative', marginRight: '10px', backgroundColor: '#fff', padding: '18px', border: '1px dashed #ccc', height: fileInfo.h || 120 + 'px', width: fileInfo.w || 120 + 'px'}">
+      :style="{
+        position: 'relative',
+        marginRight: '10px',
+        backgroundColor: '#fff',
+        padding: '18px',
+        border: '1px dashed #ccc',
+        height: fileInfo.h || 120 + 'px',
+        width: fileInfo.w || 120 + 'px'
+      }"
+    >
       <div @mouseleave="showTip()" class="showTip qui-fx-ac-jc" v-if="currentIndex === index">
         <div>
           <a-icon type="eye" @click="show(pic)"></a-icon>
           <a-icon type="delete" @click="del(pic)"></a-icon>
         </div>
       </div>
-      <img :src="pic.url" style="width: 80px; height: 80px" alt="">
+      <img :src="pic.url" style="width: 80px; height: 80px" alt="" />
     </div>
     <a-upload
       name="fileList"
@@ -23,7 +32,11 @@
       :beforeUpload="beforeUpload"
       @change="uploadPic"
     >
-      <div v-if="fileList.length < length" :style="{height: fileInfo.h || 120 + 'px', width: fileInfo.w || 120 + 'px'}" class="qui-fx-ac-jc">
+      <div
+        v-if="fileList.length < length"
+        :style="{ height: fileInfo.h || 120 + 'px', width: fileInfo.w || 120 + 'px' }"
+        class="qui-fx-ac-jc"
+      >
         <div><a-icon style="font-size: 20px" :type="uploadTag ? 'loading' : 'plus'" /></div>
         <div class="ant-upload-text">{{ fileInfo.tip }}</div>
       </div>
@@ -36,7 +49,7 @@
 <script>
 import hostEnv from '@config/host-env'
 import { mapState } from 'vuex'
-function getBase64 (img, callback) {
+function getBase64(img, callback) {
   const reader = new FileReader()
   reader.addEventListener('load', () => callback(reader.result))
   reader.readAsDataURL(img)
@@ -70,7 +83,7 @@ export default {
       }
     }
   },
-  data () {
+  data() {
     return {
       reqUrl: '',
       previewVisible: false,
@@ -79,49 +92,49 @@ export default {
       currentIndex: -1
     }
   },
-  mounted () {
+  mounted() {
     if (this.fileInfo.url) {
       this.reqUrl = this.fileInfo.url
     } else {
-      this.reqUrl = !this.isCheck ? `${hostEnv.zk_school}/file/freeUpload?schoolCode=${this.schoolCode}` : `${hostEnv.zk_school}/file/uploadUserPhoto?schoolCode=${this.schoolCode}`
+      this.reqUrl = !this.isCheck
+        ? `${hostEnv.zk_school}/file/freeUpload?schoolCode=${this.schoolCode}`
+        : `${hostEnv.zk_school}/file/uploadUserPhoto?schoolCode=${this.schoolCode}`
     }
   },
   computed: {
-    ...mapState('home', [
-      'schoolCode'
-    ]),
+    ...mapState('home', ['schoolCode']),
     fileList: {
-      get () {
+      get() {
         return this.value
       },
-      set (val) {
+      set(val) {
         this.$emit('input', val)
       }
     }
   },
   methods: {
-    showTip (index = -1) {
+    showTip(index = -1) {
       this.currentIndex = index
     },
-    show (file) {
+    show(file) {
       this.previewVisible = true
       this.previewImage = file.url
     },
-    del (file) {
+    del(file) {
       const index = this.fileList.findIndex(item => {
         return item.uid === file.uid
       })
       this.fileList.splice(index, 1)
     },
-    beforeUpload (file) {
+    beforeUpload(file) {
       const isJpg = file.type === 'image/jpeg'
       const isPng = file.type === 'image/png'
       if (!isJpg && !isPng) {
         this.$message.error('请上传图片格式的文件(jpg/png)')
       }
-      return (isJpg || isPng)
+      return isJpg || isPng
     },
-    uploadPic (info) {
+    uploadPic(info) {
       if (info.file.status === 'uploading') {
         this.uploadTag = true
         return
@@ -131,7 +144,8 @@ export default {
           this.$message.warning(info.file.response.message)
           return
         }
-        getBase64(info.file.originFileObj, (imageUrl) => {
+        console.log(info.file)
+        getBase64(info.file.originFileObj, imageUrl => {
           this.fileList.push({
             uid: info.file.uid,
             url: Array.isArray(info.file.response.data) ? info.file.response.data[0].url : info.file.response.data.url
@@ -144,20 +158,20 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-  /deep/ .ant-upload.ant-upload-select-picture-card > .ant-upload {
-    padding: 0px !important;
+/deep/ .ant-upload.ant-upload-select-picture-card > .ant-upload {
+  padding: 0px !important;
+}
+.showTip {
+  position: absolute;
+  z-index: 9;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  i {
+    cursor: pointer;
+    color: #fff;
+    padding: 0 8px;
+    font-size: 18px;
   }
-  .showTip {
-    position: absolute;
-    z-index: 9;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,.5);
-    i {
-      cursor: pointer;
-      color:#fff;
-      padding: 0 8px;
-      font-size: 18px;
-    }
-  }
+}
 </style>

@@ -1,8 +1,10 @@
 // eslint-disable-next-line
 import { BasicLayout, RouteView } from '../layouts'
 const Home = resolve => require(['../views/Home.vue'], resolve)
-const SchoolManage = resolve => require(['../views/SchoolManage.vue'], resolve)
-const UserTotal = resolve => require(['../views/UserTotal.vue'], resolve)
+const UserManage = resolve => require(['../views/UserManage.vue'], resolve)
+const Interface = resolve => require(['../views/Interface.vue'], resolve)
+const ProtalMobile = resolve => require(['../views/ProtalMobile.vue'], resolve)
+const ProtalWeb = resolve => require(['../views/ProtalWeb.vue'], resolve)
 
 export const asyncRouterMap = [
   {
@@ -10,7 +12,7 @@ export const asyncRouterMap = [
     name: 'index',
     component: BasicLayout,
     meta: {
-      title: '学校预览'
+      title: '发布预览'
     },
     redirect: '/home',
     children: [
@@ -19,40 +21,67 @@ export const asyncRouterMap = [
         name: 'home',
         component: Home,
         meta: {
-          title: '学校预览',
+          title: '发布预览',
           icon: 'eye'
         }
       },
       {
-        path: '/schoolManage',
-        name: 'schoolManage',
-        component: SchoolManage,
+        path: '/userManage',
+        name: 'userManage',
+        component: UserManage,
         meta: {
-          title: '机构管理',
+          title: '账号管理',
           icon: 'bank'
         }
       },
       {
-        path: '/totalManage',
-        name: 'totalManage',
-        component: RouteView,
-        redirect: '/userTotal',
+        path: '/interface',
+        name: 'interface',
+        component: Interface,
         meta: {
-          title: '统计信息管理',
-          icon: 'pie-chart'
-        },
-        children: [
-          {
-            path: '/userTotal',
-            name: 'userTotal',
-            component: UserTotal,
-            meta: {
-              title: '按人员统计',
-              icon: 'bar-chart'
-            }
-          }
-        ]
+          title: '异常接口',
+          icon: 'bank'
+        }
+      },
+      {
+        path: '/protal-mobile',
+        name: 'protal-mobile',
+        component: ProtalMobile,
+        meta: {
+          title: '云平台移动端',
+          icon: 'bank'
+        }
+      },
+      {
+        path: '/protal-web',
+        name: 'protal-web',
+        component: ProtalWeb,
+        meta: {
+          title: '云平台web端',
+          icon: 'bank'
+        }
       }
+      // {
+      //   path: '/',
+      //   name: 'totalManage',
+      //   component: RouteView,
+      //   redirect: '/userTotal',
+      //   meta: {
+      //     title: '平安校园移动端',
+      //     icon: 'pie-chart'
+      //   },
+      //   children: [
+      //     {
+      //       path: '/userTotal',
+      //       name: 'userTotal',
+      //       component: UserTotal,
+      //       meta: {
+      //         title: '按人员统计',
+      //         icon: 'bar-chart'
+      //       }
+      //     }
+      //   ]
+      // }
     ]
   },
   {
