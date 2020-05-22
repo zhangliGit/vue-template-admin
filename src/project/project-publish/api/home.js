@@ -6,9 +6,16 @@
 import hostEnv from '@config/host-env'
 
 const homeApi = {
-  getErrorApi: '/getErrorApi#get',
-  addErrorApi: '/addErrorApi#post'
+  getErrorApi: '/getErrorApi#get', // 获取错误api列表
+  updateErrorApi: '/updateErrorApi#post',
+  getVersionApi: '/getVersion#get', // 获取版本信息
+  delVersionApi: '/delVersion#post', // 获取版本信息
+  getUserApi: '/getUser#get',
+  updateUserApi: '/updateUser#post',
+  addUserApi: '/addUser#post',
+  delUserApi: '/delUser#post'
 }
+
 for (const val in homeApi) {
   homeApi[val] = `${hostEnv.errorApi}${homeApi[val]}`
 }

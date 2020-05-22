@@ -1,16 +1,5 @@
 <template>
   <div class="device-list page-layout qui-fx-ver">
-    <a-drawer
-      title="详情"
-      :width="550"
-      v-if="drawTag"
-      :mask="false"
-      placement="right"
-      :closable="false"
-      :visible="drawTag"
-      @close="drawTag = false"
-    >
-    </a-drawer>
     <submit-form ref="form" @submit-form="submitForm" :title="title" v-model="formStatus" :form-data="formData">
       <div slot="upload">
         <upload-multi :length="3" v-model="fileList" :fileInfo="fileInfo"></upload-multi>
@@ -22,7 +11,7 @@
       </div>
       <div slot="right"></div>
     </search-form>
-    <table-list :page-list="pageList" :columns="userColumns" :table-list="userList">
+    <table-list is-check :page-list="pageList" :columns="userColumns" :table-list="userList">
       <template v-slot:other1="other1">
         <a-tag :color="other1.record.sex == '1' ? '#f50' : '#87d068'">{{
           other1.record.sex == '1' ? '男' : '女'
@@ -69,6 +58,7 @@
 import { mapState, mapActions } from 'vuex'
 import SearchForm from '@c/SearchForm'
 import SubmitForm from '@c/SubmitForm'
+import ChooseUser from '@c/ChooseUser'
 import UploadMulti from '@c/UploadMulti'
 import TableList from '@c/TableList'
 import PageNum from '@c/PageNum'
@@ -263,6 +253,7 @@ export default {
   name: 'UserManage',
   components: {
     SearchForm,
+    ChooseUser,
     TableList,
     PageNum,
     SubmitForm,
@@ -306,6 +297,7 @@ export default {
   },
   methods: {
     ...mapActions('home', ['getUser', 'addUser', 'delUser', 'updateUser']),
+    onChange() {},
     // 弹出侧边栏
     showDraw(item) {
       this.drawTag = true

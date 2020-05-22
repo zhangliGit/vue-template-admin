@@ -67,7 +67,7 @@ const ComList = [
   Cascader,
   Drawer
 ]
-const install = (Vue) => {
+const install = Vue => {
   ComList.forEach(item => {
     Vue.use(item)
   })
