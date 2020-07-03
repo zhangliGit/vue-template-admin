@@ -5,6 +5,7 @@ const UserManage = resolve => require(['../views/UserManage.vue'], resolve)
 const Interface = resolve => require(['../views/Interface.vue'], resolve)
 const ProtalMobile = resolve => require(['../views/ProtalMobile.vue'], resolve)
 const ProtalWeb = resolve => require(['../views/ProtalWeb.vue'], resolve)
+const IconManage = resolve => require(['../views/IconManage.vue'], resolve)
 
 export const asyncRouterMap = [
   {
@@ -58,6 +59,15 @@ export const asyncRouterMap = [
         component: ProtalWeb,
         meta: {
           title: '云平台web端',
+          icon: 'bank'
+        }
+      },
+      {
+        path: '/icon-manage',
+        name: 'icon-manage',
+        component: IconManage,
+        meta: {
+          title: '移动端图标',
           icon: 'bank'
         }
       }

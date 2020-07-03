@@ -16,7 +16,7 @@ message.config({
 const vm = new Vue()
 
 // 请求超时时间
-axios.defaults.timeout = 15000
+axios.defaults.timeout = 30000
 axios.defaults.withCredentials = true // 让ajax携带cookie
 
 // 拦截请求

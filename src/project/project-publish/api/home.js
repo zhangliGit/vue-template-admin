@@ -10,6 +10,7 @@ const homeApi = {
   updateErrorApi: '/updateErrorApi#post',
   getVersionApi: '/getVersion#get', // 获取版本信息
   delVersionApi: '/delVersion#post', // 获取版本信息
+  publishApi: '/copyFileToServe#post', // 发布版本
   getUserApi: '/getUser#get',
   updateUserApi: '/updateUser#post',
   addUserApi: '/addUser#post',

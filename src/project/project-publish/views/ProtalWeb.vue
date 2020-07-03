@@ -1,28 +1,33 @@
 <template>
   <div class="error-list page-layout qui-fx-ver">
-    <table-list :page-list="pageList" :columns="versionColumns" :table-list="versionList">
-      <template v-slot:other1="other1">
-        <a-tag :color="other1.record.env === 2 ? '#87d068' : '#ccc'">
-          {{ other1.record.env === 1 ? '测试环境' : '生产环境' }}
-        </a-tag>
-      </template>
-      <template v-slot:other2="other2">
-        {{ $tools.getDate(other2.record.createTime) }}
-      </template>
-      <template v-slot:other3="other3">
-        {{ getName(other3.record.ip) }}
-      </template>
-      <template v-slot:actions="action">
-        <a-popconfirm placement="left" okText="确定" cancelText="取消" @confirm="del(action.record)">
-          <template slot="title">
-            您确定删除吗?
-          </template>
-          <a-tooltip placement="topLeft" title="删除">
-            <a-button size="small" class="del-action-btn" icon="delete"></a-button>
-          </a-tooltip>
-        </a-popconfirm>
-      </template>
-    </table-list>
+    <a-tabs v-model="autokey">
+      <a-tab-pane key="0" tab="内网环境"> </a-tab-pane>
+      <a-tab-pane key="1" tab="外网测试环境"> </a-tab-pane>
+      <a-tab-pane key="2" tab="生产环境"> </a-tab-pane>
+    </a-tabs>
+    <div class="qui-fx-f1 qui-fx">
+      <table-list :page-list="pageList" :columns="versionColumns" :table-list="versionList">
+        <template v-slot:other2="other2">
+          {{ $tools.getDate(other2.record.createTime) }}
+        </template>
+        <template v-slot:other3="other3">
+          {{ getName(other3.record.ip) }}
+        </template>
+        <template v-slot:actions="action">
+          <a-popconfirm placement="left" okText="确定" cancelText="取消" @confirm="del(action.record)">
+            <template slot="title">
+              您确定删除吗?
+            </template>
+            <a-tooltip placement="topLeft" title="删除">
+              <a-button size="small" class="del-action-btn" icon="delete"></a-button>
+            </a-tooltip>
+          </a-popconfirm>
+          <a-tag @click="publisher(action.record)" v-if="action.record.env === 1" color="#87d068">
+            发布生产环境
+          </a-tag>
+        </template>
+      </table-list>
+    </div>
     <page-num v-model="pageList" :total="total" @change-page="showList"></page-num>
   </div>
 </template>
@@ -58,27 +63,20 @@ const versionColumns = [
     width: '15%'
   },
   {
-    title: '发布环境',
-    width: '15%',
-    scopedSlots: {
-      customRender: 'other1'
-    }
-  },
-  {
     title: '版本信息',
-    width: '20%',
+    width: '25%',
     dataIndex: 'des'
   },
   {
     title: '发布日期',
-    width: '10%',
+    width: '15%',
     scopedSlots: {
       customRender: 'other2'
     }
   },
   {
     title: '操作',
-    width: '10%',
+    width: '15%',
     scopedSlots: {
       customRender: 'action'
     }
@@ -90,11 +88,20 @@ export default {
     TableList,
     PageNum
   },
+  watch: {
+    autokey: {
+      handler(n) {
+        this.showList()
+      },
+      immediate: true
+    }
+  },
   computed: {
     ...mapState('home', [])
   },
   data() {
     return {
+      autokey: '0',
       versionColumns,
       pageList: {
         page: 1,
@@ -104,17 +111,30 @@ export default {
       versionList: []
     }
   },
-  mounted() {
-    this.showList()
-  },
+  mounted() {},
   methods: {
-    ...mapActions('home', ['getVersionApi', 'delVersionApi']),
+    ...mapActions('home', ['getVersionApi', 'delVersionApi', 'publishApi']),
     getName(ip) {
       return ipList.find(item => item.ip === ip).name || '未知'
+    },
+    // 发布正式环境
+    async publisher(item) {
+      try {
+        await this.publishApi({
+          ...item
+        })
+        this.$message.success('发布成功')
+        this.$tools.goNext(() => {
+          this.showList()
+        })
+      } catch (err) {
+        this.$message.warning('发布失败')
+      }
     },
     async showList() {
       const res = await this.getVersionApi({
         ...this.pageList,
+        env: this.autokey,
         platform: 2
       })
       this.versionList = res.data.map(item => {
