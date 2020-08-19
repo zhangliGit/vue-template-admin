@@ -39,7 +39,7 @@ export default {
     ...mapActions('home', ['getIcon']),
     chooseNewFile(event) {
       const file = event.target.files[0]
-      const pathProd = '/usr/local/openresty/nginx/html/mobile-protal/mobile-img/'
+      const pathProd = '/usr/local/nginx/html/mobile-protal/mobile-img/'
       const paramProd = new FormData()
       paramProd.append('file', file)
       paramProd.append('uploadPath', pathProd)
@@ -50,17 +50,17 @@ export default {
       const config = {
         headers: { 'Content-Type': 'multipart/form-data' }
       }
-      axios.post(`http://canpointtest.com:8090/file/upload-file`, paramProd, config).then(response => {
+      axios.post(`http://canpointtest.com:8090/file/upload-file`, paramTest, config).then(response => {
         this.iconList.unshift('http://canpointtest.com/mobile-img/' + file.name)
         this.$message.success('测试环境上传成功')
       })
-      axios.post(`http://canpointlive.com:8090/file/upload-file`, paramTest, config).then(response => {
+      axios.post(`http://canpointlive.com:8090/file/upload-file`, paramProd, config).then(response => {
         this.$message.success('正式上传成功')
       })
     },
     chooseFile(event, name, index) {
       const file = event.target.files[0]
-      const pathProd = '/usr/local/openresty/nginx/html/mobile-protal/mobile-img/'
+      const pathProd = '/usr/local/nginx/html/mobile-protal/mobile-img/'
       const paramProd = new FormData()
       paramProd.append('file', file)
       paramProd.append('uploadPath', pathProd)
@@ -73,7 +73,7 @@ export default {
       const config = {
         headers: { 'Content-Type': 'multipart/form-data' }
       }
-      axios.post(`http://canpointtest.com:8090/file/upload-new-file`, paramProd, config).then(response => {
+      axios.post(`http://canpointtest.com:8090/file/upload-new-file`, paramTest, config).then(response => {
         const readFile = new FileReader()
         readFile.onload = () => {
           document.querySelector('#img' + index).src = readFile.result
@@ -81,7 +81,7 @@ export default {
         readFile.readAsDataURL(file)
         this.$message.success('测试环境上传成功')
       })
-      axios.post(`http://canpointlive.com:8090/file/upload-new-file`, paramTest, config).then(response => {
+      axios.post(`http://canpointlive.com:8090/file/upload-new-file`, paramProd, config).then(response => {
         this.$message.success('正式环境上传成功')
       })
     },

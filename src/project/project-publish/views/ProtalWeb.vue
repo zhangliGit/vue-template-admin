@@ -1,30 +1,26 @@
 <template>
   <div class="error-list page-layout qui-fx-ver">
     <a-tabs v-model="autokey">
-      <a-tab-pane key="0" tab="内网环境"> </a-tab-pane>
-      <a-tab-pane key="1" tab="外网测试环境"> </a-tab-pane>
-      <a-tab-pane key="2" tab="生产环境"> </a-tab-pane>
+      <a-tab-pane key="1" tab="外网测试环境"></a-tab-pane>
+      <a-tab-pane key="2" tab="生产环境"></a-tab-pane>
+      <a-tab-pane key="0" tab="内网环境"></a-tab-pane>
     </a-tabs>
     <div class="qui-fx-f1 qui-fx">
       <table-list :page-list="pageList" :columns="versionColumns" :table-list="versionList">
-        <template v-slot:other2="other2">
-          {{ $tools.getDate(other2.record.createTime) }}
-        </template>
-        <template v-slot:other3="other3">
-          {{ getName(other3.record.ip) }}
-        </template>
+        <template v-slot:other2="other2">{{ $tools.getDate(other2.record.createTime) }}</template>
+        <template v-slot:other3="other3">{{ getName(other3.record.ip) }}</template>
         <template v-slot:actions="action">
           <a-popconfirm placement="left" okText="确定" cancelText="取消" @confirm="del(action.record)">
-            <template slot="title">
-              您确定删除吗?
-            </template>
+            <template slot="title">您确定删除吗?</template>
             <a-tooltip placement="topLeft" title="删除">
               <a-button size="small" class="del-action-btn" icon="delete"></a-button>
             </a-tooltip>
           </a-popconfirm>
-          <a-tag @click="publisher(action.record)" v-if="action.record.env === 1" color="#87d068">
-            发布生产环境
-          </a-tag>
+          <a-tag
+            @click="publisher(action.record)"
+            v-if="action.record.env === 1"
+            color="#87d068"
+          >发布生产环境</a-tag>
         </template>
       </table-list>
     </div>
@@ -101,7 +97,7 @@ export default {
   },
   data() {
     return {
-      autokey: '0',
+      autokey: '1',
       versionColumns,
       pageList: {
         page: 1,
