@@ -21,10 +21,10 @@
           <a-icon type="delete" @click="del(pic)"></a-icon>
         </div>
       </div>
-      <img :src="pic.url" style="width: 80px; height: 80px" alt="" />
+      <img :src="pic.url" style="width: 80px; height: 80px" alt />
     </div>
     <a-upload
-      name="fileList"
+      name="file"
       listType="picture-card"
       class="avatar-uploader"
       :showUploadList="false"
@@ -37,7 +37,9 @@
         :style="{ height: fileInfo.h || 120 + 'px', width: fileInfo.w || 120 + 'px' }"
         class="qui-fx-ac-jc"
       >
-        <div><a-icon style="font-size: 20px" :type="uploadTag ? 'loading' : 'plus'" /></div>
+        <div>
+          <a-icon style="font-size: 20px" :type="uploadTag ? 'loading' : 'plus'" />
+        </div>
         <div class="ant-upload-text">{{ fileInfo.tip }}</div>
       </div>
     </a-upload>
@@ -94,6 +96,7 @@ export default {
   },
   mounted() {
     if (this.fileInfo.url) {
+      console.log(this.fileInfo.url)
       this.reqUrl = this.fileInfo.url
     } else {
       this.reqUrl = !this.isCheck

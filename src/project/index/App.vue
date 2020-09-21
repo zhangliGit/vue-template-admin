@@ -2,7 +2,12 @@
   <div class="protal-index">
     <div class="title">平安校园云平台</div>
     <div class="qui-fx-f1 protal-list">
-      <div v-for="(app, index) in appList" :key="index" class="box qui-fx-ac-jc" @click="goHtml(app.url)">
+      <div
+        v-for="(app, index) in appList"
+        :key="index"
+        class="box qui-fx-ac-jc"
+        @click="goHtml(app.url)"
+      >
         <img :src="autoImg" alt />
         {{ app.name }}
       </div>
@@ -30,6 +35,10 @@ export default {
         {
           name: '项目发布记录',
           url: 'project-publish'
+        },
+        {
+          name: '官网',
+          url: 'project-site'
         }
       ]
     }

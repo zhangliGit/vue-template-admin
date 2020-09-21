@@ -2,6 +2,7 @@
 import { BasicLayout, RouteView } from '../layouts'
 const Home = resolve => require(['../views/Home.vue'], resolve)
 const Form = resolve => require(['../views/Form.vue'], resolve)
+const Demo = resolve => require(['../views/Demo.vue'], resolve)
 const ProjectCom = resolve => require(['../views/ProjectCom.vue'], resolve)
 
 export const asyncRouterMap = [
@@ -35,6 +36,15 @@ export const asyncRouterMap = [
         component: ProjectCom,
         meta: {
           title: '项目组件',
+          icon: 'bank'
+        }
+      },
+      {
+        path: '/demo',
+        name: 'demo',
+        component: Demo,
+        meta: {
+          title: 'vue示例',
           icon: 'bank'
         }
       }

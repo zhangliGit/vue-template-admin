@@ -4,6 +4,7 @@
 
 import Vue from 'vue'
 import autoImg from '@a/img/auto_app.png'
+import axios from 'axios'
 const vm = new Vue({})
 
 const Tools = {
@@ -83,77 +84,26 @@ const Tools = {
       return '未知'
     }
   },
-  // 审批状态
-  getState(text) {
-    if (text === '0') {
-      return '待审批'
-    } else if (text === '1') {
-      return '审批通过'
-    } else if (text === '2') {
-      return '审批不通过'
-    } else if (text === '3') {
-      return '撤销'
-    } else if (text === '4') {
-      return '失效'
-    }
-  },
   // 加载图片错误处理
   errorImg(event, img) {
     event.target.src = img || autoImg
   },
-  // 控制组类型
-  controlTypeName(type) {
-    let name
-    switch (parseInt(type)) {
-      case 1:
-        name = '进控制组'
-        break
-      case 2:
-        name = '出控制组'
-        break
-      case 3:
-        name = '数据采集控制组'
-        break
-      default:
-        name = '暂无类型'
-        break
+  chooseNewFile(event, cb) {
+    const file = event.target.files[0]
+    const pathProd = '/usr/local/nginx/html/canpoint-site/upload_img/'
+    const paramProd = new FormData()
+    paramProd.append('file', file)
+    paramProd.append('uploadPath', pathProd)
+    const config = {
+      headers: { 'Content-Type': 'multipart/form-data' }
     }
-    return name
-  },
-  // 设备组类型
-  deviceTypeName(type) {
-    let name
-    switch (parseInt(type)) {
-      case 1:
-        name = '相机'
-        break
-      case 2:
-        name = '面板机'
-        break
-      case 3:
-        name = '其他'
-        break
-      default:
-        name = '其他'
-        break
-    }
-    return name
-  },
-  // 业务类型类型
-  busTypeName(type) {
-    let name
-    switch (parseInt(type)) {
-      case 1:
-        name = '数据回写'
-        break
-      case 2:
-        name = '数据效验'
-        break
-      default:
-        name = '其他'
-        break
-    }
-    return name
+    axios.post(`http://canpointlive.com:8090/file/upload-file`, paramProd, config).then(response => {
+      if (response.status === 200) {
+        cb(response.data.url)
+      } else {
+        alert('上传失败')
+      }
+    })
   }
 }
 

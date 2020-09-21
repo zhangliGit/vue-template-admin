@@ -70,13 +70,13 @@ module.exports = {
       config.optimization = {
         splitChunks: {},
         minimizer: [
-          new UglifyJsPlugin({
-            uglifyOptions: {
-              compress: {
-                drop_console: true
-              }
-            }
-          })
+          // new UglifyJsPlugin({
+          //   uglifyOptions: {
+          //     compress: {
+          //       drop_console: true
+          //     }
+          //   }
+          // })
         ]
       }
     }

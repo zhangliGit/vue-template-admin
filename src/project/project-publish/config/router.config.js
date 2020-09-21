@@ -6,6 +6,10 @@ const Interface = resolve => require(['../views/Interface.vue'], resolve)
 const ProtalMobile = resolve => require(['../views/ProtalMobile.vue'], resolve)
 const ProtalWeb = resolve => require(['../views/ProtalWeb.vue'], resolve)
 const IconManage = resolve => require(['../views/IconManage.vue'], resolve)
+const AppVersion = resolve => require(['../views/AppVersion.vue'], resolve)
+const VersionList = resolve => require(['../views/VersionList.vue'], resolve)
+const CardList = resolve => require(['../views/CardList.vue'], resolve)
+const OnLine = resolve => require(['../views/OnLine.vue'], resolve)
 
 export const asyncRouterMap = [
   {
@@ -13,7 +17,7 @@ export const asyncRouterMap = [
     name: 'index',
     component: BasicLayout,
     meta: {
-      title: '发布预览'
+      title: '班牌预览'
     },
     redirect: '/home',
     children: [
@@ -22,7 +26,7 @@ export const asyncRouterMap = [
         name: 'home',
         component: Home,
         meta: {
-          title: '发布预览',
+          title: '班牌预览',
           icon: 'eye'
         }
       },
@@ -32,7 +36,7 @@ export const asyncRouterMap = [
         component: UserManage,
         meta: {
           title: '账号管理',
-          icon: 'bank'
+          icon: 'team'
         }
       },
       {
@@ -41,7 +45,7 @@ export const asyncRouterMap = [
         component: Interface,
         meta: {
           title: '异常接口',
-          icon: 'bank'
+          icon: 'alert'
         }
       },
       {
@@ -50,16 +54,7 @@ export const asyncRouterMap = [
         component: ProtalMobile,
         meta: {
           title: '云平台移动端',
-          icon: 'bank'
-        }
-      },
-      {
-        path: '/protal-web',
-        name: 'protal-web',
-        component: ProtalWeb,
-        meta: {
-          title: '云平台web端',
-          icon: 'bank'
+          icon: 'tablet'
         }
       },
       {
@@ -68,7 +63,52 @@ export const asyncRouterMap = [
         component: IconManage,
         meta: {
           title: '移动端图标',
-          icon: 'bank'
+          icon: 'tablet'
+        }
+      },
+      {
+        path: '/protal-web',
+        name: 'protal-web',
+        component: ProtalWeb,
+        meta: {
+          title: '云平台web端',
+          icon: 'laptop'
+        }
+      },
+      {
+        path: '/app-version',
+        name: 'app-version',
+        component: AppVersion,
+        meta: {
+          title: '班牌客户端',
+          icon: 'laptop'
+        }
+      },
+      {
+        path: '/app-version/list',
+        name: '/version-list',
+        component: VersionList,
+        meta: {
+          title: '版本列表',
+          isHide: true
+        }
+      },
+      {
+        path: '/card-list',
+        name: 'card-list',
+        component: CardList,
+        meta: {
+          title: '班牌列表',
+          icon: 'bars'
+        }
+      },
+      {
+        path: '/on-line',
+        name: 'on -line',
+        component: OnLine,
+        meta: {
+          title: '在线班牌',
+          icon: 'loading'
         }
       }
       // {

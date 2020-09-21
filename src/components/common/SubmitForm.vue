@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    width="650px"
+    width="850px"
     :title="title"
     v-model="status"
     @ok="submitOk"
@@ -67,9 +67,9 @@
               }
             ]"
           >
-            <a-radio-button :value="list.key" v-for="(list, ind) in item.list" :key="ind">{{
-              list.val
-            }}</a-radio-button>
+            <a-radio-button :value="list.key" v-for="(list, ind) in item.list" :key="ind">
+              {{ list.val }}
+            </a-radio-button>
           </a-radio-group>
         </a-form-item>
         <!--复选框-->
@@ -112,9 +112,9 @@
             ]"
             :placeholder="item.placeholder"
           >
-            <a-select-option v-for="(item2, index2) in item.list" :value="item2.key" :key="index2">{{
-              item2.val
-            }}</a-select-option>
+            <a-select-option v-for="(item2, index2) in item.list" :value="item2.key" :key="index2">
+              {{ item2.val }}
+            </a-select-option>
           </a-select>
         </a-form-item>
         <!--上传图片-->
@@ -125,6 +125,16 @@
           v-if="item.type === 'upload'"
         >
           <slot name="upload"></slot>
+        </a-form-item>
+        <a-form-item
+          v-bind="formItemLayout"
+          :label="item.label"
+          :required="!item.hasOwnProperty('required') || item.required"
+          v-if="item.type === 'other'"
+        >
+          <div style="height: 450px">
+            <slot name="other"></slot>
+          </div>
         </a-form-item>
         <!--单个日期-->
         <a-form-item v-bind="formItemLayout" :label="item.label" v-if="item.type === 'singleTime'">
