@@ -1,36 +1,47 @@
 <template>
   <div class="device-list page-layout qui-fx-ver">
     <div class="top-btn-group">
-      <a-button icon="plus" @click="_addVideo(false, '新增视频')" class="add-btn">新增视频</a-button>
+      <a-button icon="plus" @click="_addCase(false, '新增信息')" class="add-btn">新增信息</a-button>
     </div>
     <submit-form ref="form" @submit-form="submit" :title="title" v-model="formUser" :form-data="formData">
-      <div slot="upload">
-        <div class="qui-fx">
-          <div v-if="url" style="margin: 10px 10px 0 0">
-            <img :src="url" style="width: 300px; height: 200px; display: block" alt />
-          </div>
-          <div style="margin-top: 10px">
-            <a href="javascript:;" class="a-upload">
-              <input @change="chooseFile($event)" type="file" name id />上传封面
-            </a>
-          </div>
-        </div>
+      <div slot="other">
+        <div>公司简介</div>
+        <quill-editor
+          style="width: 100%; height: 160px"
+          v-model="content"
+          ref="myQuillEditor"
+          :options="quillOption"
+          @focus="onEditorFocus($event)"
+          @change="onEditorChange($event, 'content')"
+        ></quill-editor>
+        <div>区域客户经理</div>
+        <quill-editor
+          style="width: 100%; height: 160px"
+          v-model="content"
+          ref="myQuillEditor1"
+          :options="quillOption"
+          @focus="onEditorFocus($event)"
+          @change="onEditorChange($event, 'content1')"
+        ></quill-editor>
       </div>
     </submit-form>
     <table-list :page-list="pageList" :columns="accountColumns" :table-list="userList">
       <template v-slot:other1="other1">
-        <img :src="other1.record.url" style="width: 200px; height: 120px; display:block" alt />
+        <div v-html="other1.record.content"></div>
+      </template>
+      <template v-slot:other2="other2">
+        <div v-html="other2.record.content1"></div>
       </template>
       <template v-slot:actions="action">
         <a-tooltip placement="topLeft" title="编辑">
           <a-button
-            @click="_addVideo(true, '编辑视频', action)"
+            @click="_addCase(true, '编辑信息', action)"
             size="small"
             class="edit-action-btn"
             icon="form"
           ></a-button>
         </a-tooltip>
-        <a-popconfirm placement="left" okText="确定" cancelText="取消" @confirm="_delVideo(action)">
+        <a-popconfirm placement="left" okText="确定" cancelText="取消" @confirm="_delCase(action)">
           <template slot="title">您确定删除吗?</template>
           <a-tooltip placement="topLeft" title="删除">
             <a-button size="small" class="del-action-btn" icon="delete"></a-button>
@@ -48,31 +59,15 @@ import SearchForm from '@c/SearchForm'
 import SubmitForm from '@c/SubmitForm'
 import TableList from '@c/TableList'
 import PageNum from '@c/PageNum'
+import { quillEditor } from 'vue-quill-editor'
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+import quillConfig from './quill-config'
 const formData = [
   {
-    value: 'title',
-    initValue: '',
-    type: 'input',
-    label: '标题',
-    placeholder: '请输入标题'
-  },
-  {
-    value: 'levelTitle',
-    initValue: '',
-    type: 'input',
-    label: '副标题',
-    placeholder: '请输入副标题'
-  },
-  {
-    value: 'videoUrl',
-    initValue: '',
-    type: 'input',
-    label: '视频链接',
-    placeholder: '请输入视频链接'
-  },
-  {
-    type: 'upload',
-    label: '上传图像'
+    type: 'other',
+    label: '关于我们'
   }
 ]
 const accountColumns = [
@@ -84,42 +79,41 @@ const accountColumns = [
     }
   },
   {
-    title: '标题',
-    width: '30%',
-    dataIndex: 'title'
-  },
-  {
-    title: '副标题',
-    width: '20%',
-    dataIndex: 'levelTitle'
-  },
-  {
-    title: '图片',
-    width: '20%',
+    title: '公司简介',
+    width: '40%',
     scopedSlots: {
       customRender: 'other1'
     }
   },
   {
+    title: '区域销售经理',
+    width: '40%',
+    scopedSlots: {
+      customRender: 'other2'
+    }
+  },
+  {
     title: '操作',
-    width: '20%',
+    width: '10%',
     scopedSlots: {
       customRender: 'action'
     }
   }
 ]
 export default {
-  name: 'VideoList',
+  name: 'About',
   components: {
     SearchForm,
     TableList,
     PageNum,
-    SubmitForm
+    SubmitForm,
+    quillEditor
   },
   data() {
     return {
-      url: '',
-      title: '',
+      quillOption: quillConfig,
+      content: '',
+      content1: '',
       total: 0,
       formUser: false,
       formData,
@@ -135,7 +129,13 @@ export default {
     this.showList()
   },
   methods: {
-    ...mapActions('home', ['addVideo', 'updateVideo', 'delVideo', 'getVideo']),
+    ...mapActions('home', ['addAbout', 'updateAbout', 'delAbout', 'getAbout']),
+    // 富文本编辑器方法
+    onEditorFocus(data) {},
+    // 获得焦点事件
+    onEditorChange(data, tag) {
+      this[tag] = data.html
+    },
     // 上传图片
     chooseFile(event) {
       this.$tools.chooseNewFile(event, data => {
@@ -143,8 +143,8 @@ export default {
       })
     },
     // 删除账号
-    async _delVideo(action) {
-      await this.delVideo({
+    async _delCase(action) {
+      await this.delAbout({
         _id: action.record._id
       })
       this.$message.success('删除成功')
@@ -153,7 +153,7 @@ export default {
       })
     },
     async showList() {
-      const res = await this.getVideo({
+      const res = await this.getAbout({
         ...this.pageList
       })
       this.userList = res.data.map(item => {
@@ -164,24 +164,28 @@ export default {
       })
       this.total = res.total
     },
-    _addVideo(type, title, item) {
+    _addCase(type, title, item) {
       this.isEdit = type
       this.title = title
       if (type) {
         this._id = item.record._id
-        this.actionFun = 'updateVideo'
+        this.actionFun = 'updateAbout'
         this.url = item.record.url
+        this.content = item.record.content
+        this.content1 = item.record.content1
         this.formData = this.$tools.fillForm(formData, item.record)
       } else {
-        this.actionFun = 'addVideo'
+        this.actionFun = 'addAbout'
+        this.content = ''
+        this.content1 = ''
         this.formData = formData
       }
       this.formUser = true
     },
     async submit(values) {
-      if (!this.url) {
+      if (!this.content || !this.content1) {
         this.$refs.form.error()
-        this.$message.warning('请上传封面图')
+        this.$message.warning('请输入内容')
         return
       }
       try {
@@ -190,7 +194,10 @@ export default {
         }
         await this[this.actionFun]({
           ...values,
-          url: this.url
+          url: this.url,
+          content: this.content,
+          content1: this.content1,
+          createTime: new Date().getTime()
         })
 
         this.$refs.form.reset()

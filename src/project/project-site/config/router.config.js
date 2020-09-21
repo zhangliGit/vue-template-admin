@@ -1,12 +1,18 @@
 // eslint-disable-next-line
-import { BasicLayout, RouteView } from '../layouts'
+import {
+  BasicLayout,
+  RouteView
+} from '../layouts'
 const Home = resolve => require(['../views/Home.vue'], resolve)
 const VideoList = resolve => require(['../views/VideoList.vue'], resolve)
 const CaseList = resolve => require(['../views/CaseList.vue'], resolve)
 const NewsList = resolve => require(['../views/NewsList.vue'], resolve)
 const SolutionList = resolve => require(['../views/SolutionList.vue'], resolve)
-export const asyncRouterMap = [
-  {
+const About = resolve => require(['../views/About.vue'], resolve)
+const DownFile = resolve => require(['../views/DownFile.vue'], resolve)
+const Boss = resolve => require(['../views/Boss.vue'], resolve)
+const OrgInfo = resolve => require(['../views/OrgInfo.vue'], resolve)
+export const asyncRouterMap = [{
     path: '/',
     name: 'index',
     component: BasicLayout,
@@ -14,8 +20,7 @@ export const asyncRouterMap = [
       title: '首页'
     },
     redirect: '/home',
-    children: [
-      {
+    children: [{
         path: '/home',
         name: 'home',
         component: Home,
@@ -57,6 +62,42 @@ export const asyncRouterMap = [
         component: NewsList,
         meta: {
           title: '新闻资讯',
+          icon: 'laptop'
+        }
+      },
+      {
+        path: '/org-info',
+        name: 'org-info',
+        component: OrgInfo,
+        meta: {
+          title: '政府政策',
+          icon: 'laptop'
+        }
+      },
+      {
+        path: '/down-file',
+        name: 'down-file',
+        component: DownFile,
+        meta: {
+          title: '资料下载',
+          icon: 'laptop'
+        }
+      },
+      {
+        path: '/boss',
+        name: 'boss',
+        component: Boss,
+        meta: {
+          title: '招聘信息',
+          icon: 'laptop'
+        }
+      },
+      {
+        path: '/about',
+        name: 'about',
+        component: About,
+        meta: {
+          title: '关于我们',
           icon: 'laptop'
         }
       }

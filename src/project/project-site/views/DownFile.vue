@@ -1,17 +1,17 @@
 <template>
   <div class="device-list page-layout qui-fx-ver">
     <div class="top-btn-group">
-      <a-button icon="plus" @click="_addVideo(false, '新增视频')" class="add-btn">新增视频</a-button>
+      <a-button icon="plus" @click="_addVideo(false, '新增资料')" class="add-btn">新增资料</a-button>
     </div>
     <submit-form ref="form" @submit-form="submit" :title="title" v-model="formUser" :form-data="formData">
       <div slot="upload">
         <div class="qui-fx">
           <div v-if="url" style="margin: 10px 10px 0 0">
-            <img :src="url" style="width: 300px; height: 200px; display: block" alt />
+            {{ url }}
           </div>
           <div style="margin-top: 10px">
             <a href="javascript:;" class="a-upload">
-              <input @change="chooseFile($event)" type="file" name id />上传封面
+              <input @change="chooseFile($event)" type="file" name id />上传附件
             </a>
           </div>
         </div>
@@ -19,12 +19,12 @@
     </submit-form>
     <table-list :page-list="pageList" :columns="accountColumns" :table-list="userList">
       <template v-slot:other1="other1">
-        <img :src="other1.record.url" style="width: 200px; height: 120px; display:block" alt />
+        {{ other1.record.url }}
       </template>
       <template v-slot:actions="action">
         <a-tooltip placement="topLeft" title="编辑">
           <a-button
-            @click="_addVideo(true, '编辑视频', action)"
+            @click="_addVideo(true, '编辑资料', action)"
             size="small"
             class="edit-action-btn"
             icon="form"
@@ -64,15 +64,8 @@ const formData = [
     placeholder: '请输入副标题'
   },
   {
-    value: 'videoUrl',
-    initValue: '',
-    type: 'input',
-    label: '视频链接',
-    placeholder: '请输入视频链接'
-  },
-  {
     type: 'upload',
-    label: '上传图像'
+    label: '上传附件'
   }
 ]
 const accountColumns = [
@@ -94,7 +87,7 @@ const accountColumns = [
     dataIndex: 'levelTitle'
   },
   {
-    title: '图片',
+    title: '附件路径',
     width: '20%',
     scopedSlots: {
       customRender: 'other1'
@@ -109,7 +102,7 @@ const accountColumns = [
   }
 ]
 export default {
-  name: 'VideoList',
+  name: 'DownFile',
   components: {
     SearchForm,
     TableList,
@@ -135,7 +128,7 @@ export default {
     this.showList()
   },
   methods: {
-    ...mapActions('home', ['addVideo', 'updateVideo', 'delVideo', 'getVideo']),
+    ...mapActions('home', ['addDownFile', 'updateDownFile', 'delDownFile', 'getDownFile']),
     // 上传图片
     chooseFile(event) {
       this.$tools.chooseNewFile(event, data => {
@@ -144,7 +137,7 @@ export default {
     },
     // 删除账号
     async _delVideo(action) {
-      await this.delVideo({
+      await this.delDownFile({
         _id: action.record._id
       })
       this.$message.success('删除成功')
@@ -153,7 +146,7 @@ export default {
       })
     },
     async showList() {
-      const res = await this.getVideo({
+      const res = await this.getDownFile({
         ...this.pageList
       })
       this.userList = res.data.map(item => {
@@ -169,11 +162,12 @@ export default {
       this.title = title
       if (type) {
         this._id = item.record._id
-        this.actionFun = 'updateVideo'
+        this.actionFun = 'updateDownFile'
         this.url = item.record.url
         this.formData = this.$tools.fillForm(formData, item.record)
       } else {
-        this.actionFun = 'addVideo'
+        this.url = ''
+        this.actionFun = 'addDownFile'
         this.formData = formData
       }
       this.formUser = true
@@ -181,7 +175,7 @@ export default {
     async submit(values) {
       if (!this.url) {
         this.$refs.form.error()
-        this.$message.warning('请上传封面图')
+        this.$message.warning('请上传附件')
         return
       }
       try {
@@ -190,7 +184,8 @@ export default {
         }
         await this[this.actionFun]({
           ...values,
-          url: this.url
+          url: this.url,
+          createTime: new Date().getTime()
         })
 
         this.$refs.form.reset()
