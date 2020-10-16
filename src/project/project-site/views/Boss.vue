@@ -3,7 +3,13 @@
     <div class="top-btn-group">
       <a-button icon="plus" @click="_addCase(false, '新增职位')" class="add-btn">新增职位</a-button>
     </div>
-    <submit-form ref="form" @submit-form="submit" :title="title" v-model="formUser" :form-data="formData">
+    <submit-form
+      ref="form"
+      @submit-form="submit"
+      :title="title"
+      v-model="formUser"
+      :form-data="formData"
+    >
       <div slot="upload">
         <div class="qui-fx">
           <div v-if="url" style="margin: 10px 10px 0 0">
@@ -29,7 +35,7 @@
     </submit-form>
     <table-list :page-list="pageList" :columns="accountColumns" :table-list="userList">
       <template v-slot:other1="other1">
-        <div v-html="other1.record.content"></div>
+        <div v-html="other1.record.content.substr(0, 50)"></div>
       </template>
       <template v-slot:actions="action">
         <a-tooltip placement="topLeft" title="编辑">
@@ -72,6 +78,13 @@ const formData = [
     placeholder: '请输入招聘职位'
   },
   {
+    value: 'remark',
+    initValue: '',
+    type: 'input',
+    label: '备注',
+    placeholder: '请输入招聘备注'
+  },
+  {
     type: 'other',
     label: '招聘详情'
   }
@@ -90,8 +103,13 @@ const accountColumns = [
     dataIndex: 'title'
   },
   {
+    title: '备注',
+    width: '20%',
+    dataIndex: 'remark'
+  },
+  {
     title: '招聘详情',
-    width: '60%',
+    width: '40%',
     scopedSlots: {
       customRender: 'other1'
     }

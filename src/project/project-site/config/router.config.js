@@ -1,8 +1,5 @@
 // eslint-disable-next-line
-import {
-  BasicLayout,
-  RouteView
-} from '../layouts'
+import { BasicLayout, RouteView } from '../layouts'
 const Home = resolve => require(['../views/Home.vue'], resolve)
 const VideoList = resolve => require(['../views/VideoList.vue'], resolve)
 const CaseList = resolve => require(['../views/CaseList.vue'], resolve)
@@ -12,7 +9,11 @@ const About = resolve => require(['../views/About.vue'], resolve)
 const DownFile = resolve => require(['../views/DownFile.vue'], resolve)
 const Boss = resolve => require(['../views/Boss.vue'], resolve)
 const OrgInfo = resolve => require(['../views/OrgInfo.vue'], resolve)
-export const asyncRouterMap = [{
+const Model = resolve => require(['../views/Model.vue'], resolve)
+const Product = resolve => require(['../views/Product.vue'], resolve)
+const ProductDes = resolve => require(['../views/ProductDes.vue'], resolve)
+export const asyncRouterMap = [
+  {
     path: '/',
     name: 'index',
     component: BasicLayout,
@@ -20,13 +21,32 @@ export const asyncRouterMap = [{
       title: '首页'
     },
     redirect: '/home',
-    children: [{
+    children: [
+      {
         path: '/home',
         name: 'home',
         component: Home,
         meta: {
           title: '首页',
           icon: 'eye'
+        }
+      },
+      {
+        path: '/productDes',
+        name: 'productDes',
+        component: ProductDes,
+        meta: {
+          title: '产品优势',
+          icon: 'laptop'
+        }
+      },
+      {
+        path: '/product',
+        name: 'product',
+        component: Product,
+        meta: {
+          title: '产品中心',
+          icon: 'laptop'
         }
       },
       {
@@ -71,6 +91,15 @@ export const asyncRouterMap = [{
         component: OrgInfo,
         meta: {
           title: '政府政策',
+          icon: 'laptop'
+        }
+      },
+      {
+        path: '/model',
+        name: 'model',
+        component: Model,
+        meta: {
+          title: '合伙人模式',
           icon: 'laptop'
         }
       },

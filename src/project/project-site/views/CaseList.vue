@@ -3,7 +3,13 @@
     <div class="top-btn-group">
       <a-button icon="plus" @click="_addCase(false, '新增案例')" class="add-btn">新增案例</a-button>
     </div>
-    <submit-form ref="form" @submit-form="submit" :title="title" v-model="formUser" :form-data="formData">
+    <submit-form
+      ref="form"
+      @submit-form="submit"
+      :title="title"
+      v-model="formUser"
+      :form-data="formData"
+    >
       <div slot="upload">
         <div class="qui-fx">
           <div v-if="url" style="margin: 10px 10px 0 0">
@@ -228,7 +234,8 @@ export default {
         await this[this.actionFun]({
           ...values,
           url: this.url,
-          content: this.content
+          content: this.content,
+          createTime: new Date().getTime()
         })
 
         this.$refs.form.reset()

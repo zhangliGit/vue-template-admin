@@ -2,25 +2,14 @@
   <div class="device-list page-layout qui-fx-ver">
     <div class="about u-fx">
       <div class="u-fx-f1">
-        <div class="title">公司简介</div>
+        <div class="title">产品优势</div>
         <quill-editor
-          style="width: 100%; height:400px"
+          style="width: 80%; height:400px"
           v-model="content"
           ref="myQuillEditor"
           :options="quillOption"
           @focus="onEditorFocus($event)"
           @change="onEditorChange($event, 'content')"
-        ></quill-editor>
-      </div>
-      <div class="u-fx-f1" style="margin-left: 20px">
-        <div class="title">区域客户经理</div>
-        <quill-editor
-          style="width: 100%; height: 400px"
-          v-model="content1"
-          ref="myQuillEditor1"
-          :options="quillOption"
-          @focus="onEditorFocus($event)"
-          @change="onEditorChange($event, 'content1')"
         ></quill-editor>
       </div>
     </div>
@@ -38,7 +27,7 @@ import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 import quillConfig from './quill-config'
 export default {
-  name: 'About',
+  name: 'ProductDes',
   components: {
     quillEditor
   },
@@ -46,8 +35,7 @@ export default {
     return {
       quillOption: quillConfig,
       detail: {},
-      content: '',
-      content1: ''
+      content: ''
     }
   },
   mounted() {
@@ -63,7 +51,7 @@ export default {
     },
     async _getAbout() {
       const res = await this.getAbout({
-        type: 'about'
+        type: 'product'
       })
       if (res.data.length > 0) {
         this.edit = true
@@ -79,8 +67,7 @@ export default {
     async _save() {
       const params = {
         content: this.content,
-        content1: this.content1,
-        type: 'about',
+        type: 'product',
         createTime: new Date().getTime()
       }
       if (this.edit) {

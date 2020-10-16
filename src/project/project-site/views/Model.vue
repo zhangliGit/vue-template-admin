@@ -1,11 +1,11 @@
 <template>
-  <div class="device-list page-layout qui-fx-ver">
+  <div class="model page-layout qui-fx-ver u-scroll-y">
+    <div class="title">业务模式</div>
     <div class="about u-fx">
       <div class="u-fx-f1">
-        <div class="title">公司简介</div>
         <quill-editor
-          style="width: 100%; height:400px"
-          v-model="content"
+          style="width: 100%; height:250px"
+          v-model="ywOne"
           ref="myQuillEditor"
           :options="quillOption"
           @focus="onEditorFocus($event)"
@@ -13,10 +13,9 @@
         ></quill-editor>
       </div>
       <div class="u-fx-f1" style="margin-left: 20px">
-        <div class="title">区域客户经理</div>
         <quill-editor
-          style="width: 100%; height: 400px"
-          v-model="content1"
+          style="width: 100%; height: 250px"
+          v-model="ywTwo"
           ref="myQuillEditor1"
           :options="quillOption"
           @focus="onEditorFocus($event)"
@@ -24,7 +23,30 @@
         ></quill-editor>
       </div>
     </div>
-    <div style="margin:50px 20px">
+    <div class="title" style="margin-top: 40px">合作模式</div>
+    <div class="about u-fx">
+      <div class="u-fx-f1">
+        <quill-editor
+          style="width: 100%; height:250px"
+          v-model="hzOne"
+          ref="myQuillEditor"
+          :options="quillOption"
+          @focus="onEditorFocus($event)"
+          @change="onEditorChange($event, 'content')"
+        ></quill-editor>
+      </div>
+      <div class="u-fx-f1" style="margin-left: 20px">
+        <quill-editor
+          style="width: 100%; height: 250px"
+          v-model="hzTwo"
+          ref="myQuillEditor1"
+          :options="quillOption"
+          @focus="onEditorFocus($event)"
+          @change="onEditorChange($event, 'content1')"
+        ></quill-editor>
+      </div>
+    </div>
+    <div style="margin:50px 0">
       <a-button type="primary" @click="_save">保存</a-button>
     </div>
   </div>
@@ -46,8 +68,10 @@ export default {
     return {
       quillOption: quillConfig,
       detail: {},
-      content: '',
-      content1: ''
+      ywOne: '',
+      ywTwo: '',
+      hzOne: '',
+      hzTwo: ''
     }
   },
   mounted() {
@@ -63,14 +87,16 @@ export default {
     },
     async _getAbout() {
       const res = await this.getAbout({
-        type: 'about'
+        type: 'model'
       })
       if (res.data.length > 0) {
         this.edit = true
         this.actionFun = 'updateAbout'
         this._id = res.data[0]._id
-        this.content = res.data[0].content
-        this.content1 = res.data[0].content1
+        this.ywOne = res.data[0].ywOne
+        this.ywTwo = res.data[0].ywTwo
+        this.hzOne = res.data[0].hzOne
+        this.hzTwo = res.data[0].hzTwo
       } else {
         this.edit = false
         this.actionFun = 'addAbout'
@@ -78,9 +104,11 @@ export default {
     },
     async _save() {
       const params = {
-        content: this.content,
-        content1: this.content1,
-        type: 'about',
+        ywOne: this.ywOne,
+        ywTwo: this.ywTwo,
+        hzOne: this.hzOne,
+        hzTwo: this.hzTwo,
+        type: 'model',
         createTime: new Date().getTime()
       }
       if (this.edit) {
@@ -96,8 +124,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.about {
-  margin: 20px;
+.model {
+  padding: 10px 20px;
   .title {
     font-weight: bold;
     padding: 10px 0;

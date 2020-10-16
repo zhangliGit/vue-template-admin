@@ -73,6 +73,10 @@ const formData = [
   {
     type: 'upload',
     label: '上传图像'
+  },
+  {
+    type: 'upload',
+    label: '上传图像'
   }
 ]
 const accountColumns = [
@@ -190,7 +194,8 @@ export default {
         }
         await this[this.actionFun]({
           ...values,
-          url: this.url
+          url: this.url,
+          createTime: new Date().getTime()
         })
 
         this.$refs.form.reset()

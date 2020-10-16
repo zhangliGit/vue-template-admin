@@ -1,7 +1,7 @@
 <template>
   <div class="device-list page-layout qui-fx-ver">
     <div class="top-btn-group">
-      <a-button icon="plus" @click="_addSolution(false, '新增方案')" class="add-btn">新增方案</a-button>
+      <a-button icon="plus" @click="_addCase(false, '新增产品')" class="add-btn">新增产品</a-button>
     </div>
     <submit-form
       ref="form"
@@ -40,13 +40,13 @@
       <template v-slot:actions="action">
         <a-tooltip placement="topLeft" title="编辑">
           <a-button
-            @click="_addSolution(true, '编辑方案', action)"
+            @click="_addCase(true, '编辑产品', action)"
             size="small"
             class="edit-action-btn"
             icon="form"
           ></a-button>
         </a-tooltip>
-        <a-popconfirm placement="left" okText="确定" cancelText="取消" @confirm="_delSolution(action)">
+        <a-popconfirm placement="left" okText="确定" cancelText="取消" @confirm="_delCase(action)">
           <template slot="title">您确定删除吗?</template>
           <a-tooltip placement="topLeft" title="删除">
             <a-button size="small" class="del-action-btn" icon="delete"></a-button>
@@ -74,23 +74,16 @@ const formData = [
     value: 'title',
     initValue: '',
     type: 'input',
-    label: '标题',
-    placeholder: '请输入标题'
-  },
-  {
-    value: 'levelTitle',
-    initValue: '',
-    type: 'input',
-    label: '副标题',
-    placeholder: '请输入副标题'
+    label: '产品名称',
+    placeholder: '请输入产品名称'
   },
   {
     type: 'upload',
-    label: '上传图像'
+    label: '上传封面'
   },
   {
     type: 'other',
-    label: '方案内容'
+    label: '产品内容'
   }
 ]
 const accountColumns = [
@@ -102,32 +95,27 @@ const accountColumns = [
     }
   },
   {
-    title: '标题',
-    width: '30%',
+    title: '产品名称',
+    width: '40%',
     dataIndex: 'title'
   },
   {
-    title: '副标题',
-    width: '20%',
-    dataIndex: 'levelTitle'
-  },
-  {
     title: '封面图片',
-    width: '20%',
+    width: '40%',
     scopedSlots: {
       customRender: 'other1'
     }
   },
   {
     title: '操作',
-    width: '20%',
+    width: '10%',
     scopedSlots: {
       customRender: 'action'
     }
   }
 ]
 export default {
-  name: 'UserManage',
+  name: 'Product',
   components: {
     SearchForm,
     TableList,
@@ -156,7 +144,7 @@ export default {
     this.showList()
   },
   methods: {
-    ...mapActions('home', ['addSolution', 'updateSolution', 'delSolution', 'getSolution']),
+    ...mapActions('home', ['addProduct', 'updateProduct', 'delProduct', 'getProduct']),
     // 富文本编辑器方法
     onEditorFocus(data) {},
     // 获得焦点事件
@@ -172,8 +160,8 @@ export default {
       })
     },
     // 删除账号
-    async _delSolution(action) {
-      await this.delSolution({
+    async _delCase(action) {
+      await this.delProduct({
         _id: action.record._id
       })
       this.$message.success('删除成功')
@@ -182,7 +170,7 @@ export default {
       })
     },
     async showList() {
-      const res = await this.getSolution({
+      const res = await this.getProduct({
         ...this.pageList
       })
       this.userList = res.data.map(item => {
@@ -193,17 +181,17 @@ export default {
       })
       this.total = res.total
     },
-    _addSolution(type, title, item) {
+    _addCase(type, title, item) {
       this.isEdit = type
       this.title = title
       if (type) {
         this._id = item.record._id
-        this.actionFun = 'updateSolution'
+        this.actionFun = 'updateProduct'
         this.url = item.record.url
         this.content = item.record.content
         this.formData = this.$tools.fillForm(formData, item.record)
       } else {
-        this.actionFun = 'addSolution'
+        this.actionFun = 'addProduct'
         this.content = ''
         this.formData = formData
       }

@@ -6,12 +6,22 @@
     <submit-form ref="form" @submit-form="submit" :title="title" v-model="formUser" :form-data="formData">
       <div slot="upload">
         <div class="qui-fx">
+          <div v-if="pic" style="margin: 10px 10px 0 0">
+            <img :src="pic" style="width: 300px; height: 200px; display: block" alt />
+          </div>
+          <div style="margin-top: 10px">
+            <a href="javascript:;" class="a-upload">
+              <input @change="chooseFile($event, 'pic')" type="file" name id />上传封面图
+            </a>
+          </div>
+        </div>
+        <div class="qui-fx">
           <div v-if="url" style="margin: 10px 10px 0 0">
             {{ url }}
           </div>
           <div style="margin-top: 10px">
             <a href="javascript:;" class="a-upload">
-              <input @change="chooseFile($event)" type="file" name id />上传附件
+              <input @change="chooseFile($event, 'url')" type="file" name id />上传附件
             </a>
           </div>
         </div>
@@ -111,6 +121,7 @@ export default {
   },
   data() {
     return {
+      pic: '',
       url: '',
       title: '',
       total: 0,
@@ -130,9 +141,9 @@ export default {
   methods: {
     ...mapActions('home', ['addDownFile', 'updateDownFile', 'delDownFile', 'getDownFile']),
     // 上传图片
-    chooseFile(event) {
+    chooseFile(event, tag) {
       this.$tools.chooseNewFile(event, data => {
-        this.url = data
+        this[tag] = data
       })
     },
     // 删除账号
@@ -164,16 +175,18 @@ export default {
         this._id = item.record._id
         this.actionFun = 'updateDownFile'
         this.url = item.record.url
+        this.pic = item.record.pic
         this.formData = this.$tools.fillForm(formData, item.record)
       } else {
         this.url = ''
+        this.pic = ''
         this.actionFun = 'addDownFile'
         this.formData = formData
       }
       this.formUser = true
     },
     async submit(values) {
-      if (!this.url) {
+      if (!this.url || !this.pic) {
         this.$refs.form.error()
         this.$message.warning('请上传附件')
         return
@@ -185,6 +198,7 @@ export default {
         await this[this.actionFun]({
           ...values,
           url: this.url,
+          pic: this.pic,
           createTime: new Date().getTime()
         })
 
