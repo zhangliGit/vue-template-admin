@@ -1,7 +1,7 @@
 <template>
   <div class="device-list page-layout qui-fx-ver">
     <div class="top-btn-group">
-      <a-button icon="plus" @click="_addNews(false, '新增新闻')" class="add-btn">新增新闻</a-button>
+      <a-button icon="plus" @click="addUserList(false, '新增图标')" class="add-btn">新增</a-button>
     </div>
     <submit-form
       ref="form"
@@ -13,45 +13,30 @@
       <div slot="upload">
         <div class="qui-fx">
           <div v-if="url" style="margin: 10px 10px 0 0">
-            <img :src="url" style="width: 300px; height: 200px; display: block" alt />
+            <img
+              :src="url"
+              style="width: 160px; height: 160px; display: block; background-color:#eee"
+              alt
+            />
           </div>
           <div style="margin-top: 10px">
             <a href="javascript:;" class="a-upload">
-              <input @change="chooseFile($event)" type="file" name id />上传封面
+              <input @change="chooseFile($event)" type="file" name id />上传图标
             </a>
           </div>
         </div>
       </div>
-      <div slot="other" style="width: 100%; height: 440px">
-        <quill-editor
-          style="width: 100%; height: 400px"
-          v-model="content"
-          ref="myQuillEditor"
-          :options="quillOption"
-          @focus="onEditorFocus($event)"
-          @change="onEditorChange($event)"
-        ></quill-editor>
-      </div>
     </submit-form>
     <table-list :page-list="pageList" :columns="accountColumns" :table-list="userList">
-      <template v-slot:other1="other1">
-        <img :src="other1.record.url" style="width: 200px; height: 120px; display:block" alt />
-      </template>
       <template v-slot:actions="action">
         <a-tooltip placement="topLeft" title="编辑">
           <a-button
-            @click="_addNews(true, '编辑新闻', action)"
+            @click="addUserList(true, '编辑图标', action)"
             size="small"
             class="edit-action-btn"
             icon="form"
           ></a-button>
         </a-tooltip>
-        <a-popconfirm placement="left" okText="确定" cancelText="取消" @confirm="_delNews(action)">
-          <template slot="title">您确定删除吗?</template>
-          <a-tooltip placement="topLeft" title="删除">
-            <a-button size="small" class="del-action-btn" icon="delete"></a-button>
-          </a-tooltip>
-        </a-popconfirm>
       </template>
     </table-list>
     <page-num v-model="pageList" :total="total" @change-page="showList"></page-num>
@@ -64,40 +49,25 @@ import SearchForm from '@c/SearchForm'
 import SubmitForm from '@c/SubmitForm'
 import TableList from '@c/TableList'
 import PageNum from '@c/PageNum'
-import { quillEditor } from 'vue-quill-editor'
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
-import quillConfig from './quill-config'
+import axios from 'axios'
 const formData = [
   {
-    value: 'title',
+    value: 'iconDes',
     initValue: '',
     type: 'input',
-    label: '标题',
-    placeholder: '请输入标题'
+    label: '图标说明',
+    placeholder: '请输入图标说明'
   },
   {
-    value: 'levelTitle',
+    value: 'iconSize',
     initValue: '',
     type: 'input',
-    label: '副标题',
-    placeholder: '请输入副标题'
-  },
-  {
-    value: 'showDate',
-    initValue: '',
-    type: 'input',
-    label: '新闻日期',
-    placeholder: '请输入新闻日期'
+    label: '尺寸',
+    placeholder: '请输入图标尺寸'
   },
   {
     type: 'upload',
-    label: '上传封面'
-  },
-  {
-    type: 'other',
-    label: '新闻内容'
+    label: '上传图像'
   }
 ]
 const accountColumns = [
@@ -109,26 +79,27 @@ const accountColumns = [
     }
   },
   {
-    title: '标题',
+    title: '图片描述',
     width: '20%',
-    dataIndex: 'title'
+    dataIndex: 'iconDes'
   },
   {
-    title: '副标题',
+    title: '尺寸',
     width: '20%',
-    dataIndex: 'levelTitle'
+    dataIndex: 'iconSize'
   },
   {
-    title: '封面图片',
+    title: '路径',
+    width: '20%',
+    dataIndex: 'iconUrl'
+  },
+  {
+    title: '底照',
+    dataIndex: 'iconUrl',
     width: '20%',
     scopedSlots: {
-      customRender: 'other1'
+      customRender: 'photoPic'
     }
-  },
-  {
-    title: '发布日期',
-    width: '20%',
-    dataIndex: 'showDate'
   },
   {
     title: '操作',
@@ -139,24 +110,21 @@ const accountColumns = [
   }
 ]
 export default {
-  name: 'NewsList',
+  name: 'MiniIcon',
   components: {
     SearchForm,
     TableList,
     PageNum,
-    SubmitForm,
-    quillEditor
+    SubmitForm
   },
   data() {
     return {
-      quillOption: quillConfig,
-      content: '',
-      url: '',
       title: '',
       total: 0,
       formUser: false,
       formData,
       accountColumns,
+      url: '',
       pageList: {
         page: 1,
         size: 20
@@ -168,33 +136,32 @@ export default {
     this.showList()
   },
   methods: {
-    ...mapActions('home', ['addNews', 'updateNews', 'delNews', 'getNews']),
-    // 富文本编辑器方法
-    onEditorFocus(data) {},
-    // 获得焦点事件
-    onEditorChange(data) {
-      this.text = data.text
-      this.content = data.html
-      this.roundup = data.text.substring(0, 120)
-    },
+    ...mapActions('home', ['getMini', 'updateMini', 'addMini']),
     // 上传图片
     chooseFile(event) {
-      this.$tools.chooseNewFile(event, data => {
-        this.url = data
+      const file = event.target.files[0]
+      const pathProd = '/usr/local/nginx/html/mini-img/'
+      const paramProd = new FormData()
+      paramProd.append('file', file)
+      paramProd.append('uploadPath', pathProd)
+      const pathTest = '/usr/local/openresty/nginx/html/mini-img/'
+      const paramTest = new FormData()
+      paramTest.append('file', file)
+      paramTest.append('uploadPath', pathTest)
+      const config = {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      }
+      axios.post(`http://canpointtest.com:8090/file/upload-file`, paramTest, config).then(response => {
+        this.url = `http://canpointtest.com/mini-img/${file.name}`
+        this.$message.success('上传成功')
       })
-    },
-    // 删除账号
-    async _delNews(action) {
-      await this.delNews({
-        _id: action.record._id
-      })
-      this.$message.success('删除成功')
-      this.$tools.goNext(() => {
-        this.showList()
+      axios.post(`http://canpointlive.com:8090/file/upload-file`, paramProd, config).then(response => {
+        this.url = `http://canpointtest.com/mini-img/${file.name}`
+        this.$message.success('上传成功')
       })
     },
     async showList() {
-      const res = await this.getNews({
+      const res = await this.getMini({
         ...this.pageList
       })
       this.userList = res.data.map(item => {
@@ -205,37 +172,30 @@ export default {
       })
       this.total = res.total
     },
-    _addNews(type, title, item) {
+    addUserList(type, title, item) {
       this.isEdit = type
       this.title = title
       if (type) {
         this._id = item.record._id
-        this.actionFun = 'updateNews'
-        this.url = item.record.url
-        this.content = item.record.content
+        this.actionFun = 'updateMini'
+        this.url = item.record.iconUrl
         this.formData = this.$tools.fillForm(formData, item.record)
       } else {
-        this.actionFun = 'addNews'
-        this.content = ''
+        this.actionFun = 'addMini'
+        this.url = ''
         this.formData = formData
       }
       this.formUser = true
     },
     async submit(values) {
-      if (!this.url || !this.content) {
-        this.$refs.form.error()
-        this.$message.warning('请上传封面图或填写内容')
-        return
-      }
       try {
         if (this.isEdit) {
           values._id = this._id
         }
+        console.log(values)
         await this[this.actionFun]({
           ...values,
-          url: this.url,
-          content: this.content,
-          createTime: new Date().getTime()
+          iconUrl: this.url
         })
 
         this.$refs.form.reset()

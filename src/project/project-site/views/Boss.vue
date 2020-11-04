@@ -3,13 +3,7 @@
     <div class="top-btn-group">
       <a-button icon="plus" @click="_addCase(false, '新增职位')" class="add-btn">新增职位</a-button>
     </div>
-    <submit-form
-      ref="form"
-      @submit-form="submit"
-      :title="title"
-      v-model="formUser"
-      :form-data="formData"
-    >
+    <submit-form ref="form" @submit-form="submit" :title="title" v-model="formUser" :form-data="formData">
       <div slot="upload">
         <div class="qui-fx">
           <div v-if="url" style="margin: 10px 10px 0 0">
@@ -24,12 +18,22 @@
       </div>
       <div slot="other">
         <quill-editor
-          style="width: 100%; height: 400px"
+          style="width: 100%; height: 150px"
           v-model="content"
           ref="myQuillEditor"
           :options="quillOption"
           @focus="onEditorFocus($event)"
           @change="onEditorChange($event)"
+        ></quill-editor>
+      </div>
+      <div slot="other1">
+        <quill-editor
+          style="width: 100%; height: 150px"
+          v-model="contentOther"
+          ref="myQuillEditor"
+          :options="quillOption"
+          @focus="onEditorFocus1($event)"
+          @change="onEditorChange1($event)"
         ></quill-editor>
       </div>
     </submit-form>
@@ -86,7 +90,11 @@ const formData = [
   },
   {
     type: 'other',
-    label: '招聘详情'
+    label: '职位描述'
+  },
+  {
+    type: 'other1',
+    label: '人员要求'
   }
 ]
 const accountColumns = [
@@ -135,6 +143,7 @@ export default {
     return {
       quillOption: quillConfig,
       content: '',
+      contentOther: '',
       title: '',
       total: 0,
       formUser: false,
@@ -156,9 +165,10 @@ export default {
     onEditorFocus(data) {},
     // 获得焦点事件
     onEditorChange(data) {
-      this.text = data.text
       this.content = data.html
-      this.roundup = data.text.substring(0, 120)
+    },
+    onEditorChange1(data) {
+      this.contentOther = data.html
     },
     // 上传图片
     chooseFile(event) {
@@ -196,16 +206,18 @@ export default {
         this.actionFun = 'updateBoss'
         this.url = item.record.url
         this.content = item.record.content
+        this.contentOther = item.record.contentOther
         this.formData = this.$tools.fillForm(formData, item.record)
       } else {
         this.actionFun = 'addBoss'
         this.content = ''
+        this.contentOther = ''
         this.formData = formData
       }
       this.formUser = true
     },
     async submit(values) {
-      if (!this.content) {
+      if (!this.content || !this.contentOther) {
         this.$refs.form.error()
         this.$message.warning('请输入招聘详情')
         return
@@ -217,7 +229,8 @@ export default {
         await this[this.actionFun]({
           ...values,
           url: this.url,
-          content: this.content
+          content: this.content,
+          contentOther: this.contentOther
         })
 
         this.$refs.form.reset()

@@ -6,6 +6,7 @@ const Interface = resolve => require(['../views/Interface.vue'], resolve)
 const ProtalMobile = resolve => require(['../views/ProtalMobile.vue'], resolve)
 const ProtalWeb = resolve => require(['../views/ProtalWeb.vue'], resolve)
 const IconManage = resolve => require(['../views/IconManage.vue'], resolve)
+const MiniIcon = resolve => require(['../views/MiniIcon.vue'], resolve)
 const AppVersion = resolve => require(['../views/AppVersion.vue'], resolve)
 const VersionList = resolve => require(['../views/VersionList.vue'], resolve)
 const CardList = resolve => require(['../views/CardList.vue'], resolve)
@@ -63,6 +64,15 @@ export const asyncRouterMap = [
         component: IconManage,
         meta: {
           title: '移动端图标',
+          icon: 'tablet'
+        }
+      },
+      {
+        path: '/mini-icon',
+        name: 'mini-icon',
+        component: MiniIcon,
+        meta: {
+          title: '小程序图标',
           icon: 'tablet'
         }
       },
